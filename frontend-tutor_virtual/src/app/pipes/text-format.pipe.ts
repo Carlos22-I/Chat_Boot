@@ -8,19 +8,25 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class TextFormatPipe implements PipeTransform {
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer) { }
 
   transform(text: string): SafeHtml {
     if (!text) return '';
 
-    // Convertir saltos de línea a <br>
-    let formatted = text.replace(/\n/g, '<br>');
+    let formatted = text;
 
-    // Hacer negritas para títulos tipo "PASO 1:", "📋 PASO 2:", etc.
-    formatted = formatted.replace(/(📋\s*PASO\s*\d+:|PASO\s*\d+:)/gi, '<strong>$1</strong>');
+    // 1. Procesar negritas Markdown: **texto** -> <strong>texto</strong>
+    formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-    // Hacer negritas para secciones importantes
-    formatted = formatted.replace(/(💡\s*[^:]+:)/gi, '<strong>$1</strong>');
+    // 2. Procesar viñetas: líneas que empiezan con * -> viñeta con guion o punto
+    // Buscamos líneas que empiecen con asterisco (con o sin espacio inicial)
+    formatted = formatted.replace(/^\s*\*\s+(.*)$/gm, '• $1');
+
+    // 3. Convertir saltos de línea a <br>
+    formatted = formatted.replace(/\n/g, '<br>');
+
+    // 4. Hacer negritas para títulos tipo "PASO 1:", etc. (por si no tienen **)
+    formatted = formatted.replace(/(PASO\s*\d+:)/gi, '<strong>$1</strong>');
 
     // Sanitizar el HTML
     return this.sanitizer.bypassSecurityTrustHtml(formatted);

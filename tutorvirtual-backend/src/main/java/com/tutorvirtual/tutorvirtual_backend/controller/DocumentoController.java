@@ -55,20 +55,19 @@ public class DocumentoController {
                 return ResponseEntity.badRequest().body("Solo se permiten archivos PDF");
             }
 
-            // 📁 Guardar archivo (REEMPLAZADO POR BD)
-            // String uploadDir = "uploads/documentos/";
-            String nombreArchivo = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            // Path rutaCompleta = Paths.get(uploadDir, nombreArchivo);
+            String nombreOriginal = file.getOriginalFilename();
 
-            // Files.createDirectories(rutaCompleta.getParent());
-            // Files.write(rutaCompleta, file.getBytes());
+            // 🚫 VALIDACIÓN DE DUPLICADOS
+            if (documentoService.existePorNombre(nombreOriginal)) {
+                return ResponseEntity.status(409).body("Ya existe un documento con el nombre: " + nombreOriginal);
+            }
 
             // 🧠 EXTRAER TEXTO DEL PDF
             String textoExtraido = pdfTextService.extraerTexto(file);
 
             // 💾 Guardar metadata en BD
             Documento documento = new Documento();
-            documento.setNombreArchivo(nombreArchivo);
+            documento.setNombreArchivo(nombreOriginal); // Guardar nombre original para detectar duplicados
             documento.setCategoria(categoria);
             documento.setRutaArchivo("DB_STORAGE"); // Valor placeholder
             documento.setDatos(file.getBytes());
@@ -204,22 +203,16 @@ public class DocumentoController {
         }
 
         try {
-            // 🗑️ eliminar archivo anterior (YA NO NECESARIO)
-            // Path rutaAnterior = Paths.get(doc.getRutaArchivo());
-            // if (Files.exists(rutaAnterior)) { ... }
+            String nuevoNombre = file.getOriginalFilename();
 
-            // 📁 guardar nuevo archivo (EN BD)
-            // String uploadDir = "uploads/documentos/";
-            String nuevoNombre = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            // Path nuevaRuta = Paths.get(uploadDir + nuevoNombre);
-
-            // Files.createDirectories(nuevaRuta.getParent());
-            // Files.write(nuevaRuta, file.getBytes());
+            // 🚫 Validar si el nombre ya existe en OTRO documento
+            if (!doc.getNombreArchivo().equals(nuevoNombre) && documentoService.existePorNombre(nuevoNombre)) {
+                return ResponseEntity.status(409).body("Ya existe otro documento con el nombre: " + nuevoNombre);
+            }
 
             // 🧠 Extraer texto del nuevo PDF
             String textoExtraido = pdfTextService.extraerTexto(file);
 
-            // ✏️ actualizar datos
             // ✏️ actualizar datos
             doc.setNombreArchivo(nuevoNombre);
             doc.setRutaArchivo("DB_STORAGE");

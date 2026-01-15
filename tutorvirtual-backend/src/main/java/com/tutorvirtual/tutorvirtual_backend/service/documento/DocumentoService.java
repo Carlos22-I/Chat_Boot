@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tutorvirtual.tutorvirtual_backend.entity.Documento;
 import com.tutorvirtual.tutorvirtual_backend.repository.DocumentoRepository;
@@ -17,8 +18,13 @@ public class DocumentoService {
         this.documentoRepository = documentoRepository;
     }
 
+    @Transactional(timeout = 120) // 2 minutos para archivos grandes
     public Documento guardarDocumento(Documento documento) {
         return documentoRepository.save(documento);
+    }
+
+    public boolean existePorNombre(String nombre) {
+        return documentoRepository.existsByNombreArchivo(nombre);
     }
 
     public void eliminarDocumento(Long id) {
@@ -34,28 +40,9 @@ public class DocumentoService {
         return documentoRepository.findById(id).orElse(null);
     }
 
-    // ✅ MÉTODO CORREGIDO - MÁS ROBUSTO
     public long contarDocumentosHoy() {
         String fechaHoy = LocalDate.now().toString();
-        
-        System.out.println("🔍 Buscando documentos con fecha: " + fechaHoy);
-        
-        // Intentar con query nativa primero
-        long cantidad = documentoRepository.contarPorFecha(fechaHoy);
-        
-        System.out.println("📊 Documentos encontrados hoy: " + cantidad);
-        
-        // Si no encuentra nada, contar manualmente como fallback
-        if (cantidad == 0) {
-            List<Documento> todos = documentoRepository.findAll();
-            cantidad = todos.stream()
-                .filter(d -> d.getFechaSubida() != null && d.getFechaSubida().startsWith(fechaHoy))
-                .count();
-            
-            System.out.println("📊 Documentos encontrados hoy (manual): " + cantidad);
-        }
-        
-        return cantidad;
+        return documentoRepository.contarPorFecha(fechaHoy);
     }
 
     public List<Documento> listarDocumentos() {

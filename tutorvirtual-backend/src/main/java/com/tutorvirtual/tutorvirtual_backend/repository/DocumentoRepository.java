@@ -9,12 +9,11 @@ import com.tutorvirtual.tutorvirtual_backend.entity.Documento;
 
 @Repository
 public interface DocumentoRepository extends JpaRepository<Documento, Long> {
-    
-    // ✅ OPCIÓN 1: Query nativa (más confiable)
-    @Query(value = "SELECT COUNT(*) FROM documentos WHERE fecha_subida = :fecha", nativeQuery = true)
-    long contarPorFecha(@Param("fecha") String fecha);
-    
-    // ✅ OPCIÓN 2: Query JPQL (alternativa)
+
+    // ✅ Verificar si ya existe un archivo con este nombre
+    boolean existsByNombreArchivo(String nombreArchivo);
+
+    // ✅ Contar documentos por fecha exacta
     @Query("SELECT COUNT(d) FROM Documento d WHERE d.fechaSubida = :fecha")
-    long contarPorFechaJPQL(@Param("fecha") String fecha);
+    long contarPorFecha(@Param("fecha") String fecha);
 }

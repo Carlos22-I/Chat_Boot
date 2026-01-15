@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,7 +30,6 @@ public class Documento {
     @Column(name = "ruta_archivo", nullable = false)
     private String rutaArchivo;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String contenidoTexto;
 
@@ -53,7 +51,6 @@ public class Documento {
         this.geminiFileId = geminiFileId;
     }
 
-    @Lob
     @Column(name = "datos")
     private byte[] datos;
 

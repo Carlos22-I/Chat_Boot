@@ -24,15 +24,15 @@ export class AdminDashboard implements OnInit {
   constructor(
     private documentoService: DocumentoService,
     private router: Router
-  ) {}
+  ) { }
 
   files: DocumentFile[] = [];
   filesFiltrados: DocumentFile[] = [];
-  
+
   busqueda = '';
   filtroCategoria = 'Todos';
   categoriaSeleccionada = 'General';
-  
+
   isLoading = false;
   isDragging = false; // ✅ NUEVO: Control de arrastre
 
@@ -43,11 +43,11 @@ export class AdminDashboard implements OnInit {
   cargarDocumentos(mantenerScroll: boolean = false) {
     // ✅ Guardar posición actual del scroll
     const scrollPosition = mantenerScroll ? window.scrollY : 0;
-    
+
     this.documentoService.listarDocumentos().subscribe({
       next: (data: any[]) => {
         console.log('📥 Documentos recibidos:', data);
-        
+
         this.files = data.map(doc => ({
           id: doc.id,
           name: doc.nombreArchivo,
@@ -55,10 +55,10 @@ export class AdminDashboard implements OnInit {
           size: `${doc.tamañoArchivo.toFixed(2)} MB`,
           category: doc.categoria
         }));
-        
+
         this.filesFiltrados = this.files;
         console.log('✅ Documentos cargados:', this.files.length);
-        
+
         // ✅ Restaurar posición del scroll después de que Angular actualice la vista
         if (mantenerScroll) {
           setTimeout(() => {
@@ -156,17 +156,23 @@ export class AdminDashboard implements OnInit {
     this.isLoading = true;
 
     let subidosExitosamente = 0;
-    let errores = 0;
+    let duplicados = 0;
+    let otrosErrores = 0;
+    let nombresDuplicados: string[] = [];
 
-    // Subir archivos uno por uno
     for (const file of files) {
       try {
         await this.subirArchivoPromise(file);
         subidosExitosamente++;
         console.log(`✅ Subido: ${file.name}`);
-      } catch (error) {
-        errores++;
+      } catch (error: any) {
         console.error(`❌ Error al subir ${file.name}:`, error);
+        if (error.status === 409) {
+          duplicados++;
+          nombresDuplicados.push(file.name);
+        } else {
+          otrosErrores++;
+        }
       }
     }
 
@@ -174,11 +180,17 @@ export class AdminDashboard implements OnInit {
     this.cargarDocumentos(true);
     this.isLoading = false;
 
-    // Mensaje final
-    if (errores === 0) {
+    // Mensaje final personalizado
+    if (otrosErrores === 0 && duplicados === 0) {
       alert(`✅ ${subidosExitosamente} documento(s) subido(s) correctamente`);
+    } else if (duplicados > 0 && subidosExitosamente === 0 && otrosErrores === 0) {
+      alert(`🚫 El archivo ya existe:\n${nombresDuplicados.join('\n')}`);
     } else {
-      alert(`⚠️ Subidos: ${subidosExitosamente}, Errores: ${errores}`);
+      let mensaje = `Resumen de carga:\n`;
+      if (subidosExitosamente > 0) mensaje += `✅ Subidos: ${subidosExitosamente}\n`;
+      if (duplicados > 0) mensaje += `🚫 Ya existen: ${duplicados}\n`;
+      if (otrosErrores > 0) mensaje += `❌ Errores: ${otrosErrores}`;
+      alert(mensaje);
     }
   }
 
@@ -245,10 +257,14 @@ export class AdminDashboard implements OnInit {
             this.isLoading = false;
             alert('Documento actualizado correctamente');
           },
-          error: (err) => {
+          error: (err: any) => {
             console.error('❌ Error al actualizar:', err);
             this.isLoading = false;
-            alert('Error al actualizar documento');
+            if (err.status === 409) {
+              alert('🚫 El archivo ya existe con ese nombre');
+            } else {
+              alert('Error al actualizar documento');
+            }
           }
         });
     };
@@ -261,7 +277,12 @@ export class AdminDashboard implements OnInit {
   }
 
   documentosSubidosHoy(): number {
-    const hoy = new Date().toISOString().split('T')[0];
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hoy = `${year}-${month}-${day}`;
+
     return this.files.filter(f => f.date === hoy).length;
   }
 
