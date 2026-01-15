@@ -1,0 +1,76 @@
+<app-navbar></app-navbar>
+<div class="hero-container">
+    <div class="content-wrapper">
+        <h1 class="main-title">Tutor de Tramites Documentarios</h1>
+        <p class="description-text">Obtén respuestas inmediatas sobre trámites documentarios, requisitos</p>
+        <p class="description-text">y procedimientos académicos</p>
+    </div>
+</div>
+
+
+<section class="container home-section">
+  <div class="chat-card-container">
+    
+    <!-- Icono Placeholder: Reemplazar con un icono real (ej: SVG o librería de iconos) -->
+    <img src="../../../assets/icon/chat.svg" alt="Icono de chat" class="chat-icon">
+
+    <h1 class="chat-title">¿En qué puedo ayudarte hoy?</h1>
+    <p class="chat-subtitle">Pregunta sobre cualquier trámite documentario y te guiaré paso a paso</p>
+    
+
+    <div class="button-wrapper">
+      <!-- Usa la ruta lógica '/chat-tutor' en lugar de la ruta de archivo -->
+      <button class="btn btn-primary chat-button" routerLink="/chat-tutor">Iniciar Conversación</button>
+    </div>
+
+  </div>
+
+
+
+<div class="feature-grid-container">
+    <!-- Tarjeta 1: Información Académica -->
+    <app-card-feature 
+      title="Información Académica" 
+      subtitle="Consulta sobre requisitos, plazos y procedimientos académicos"
+      iconUrl="../../../assets/icon/book.svg"> 
+    </app-card-feature>
+
+    <!-- Tarjeta 2: Trámites Documentarios (con botón) -->
+    <app-card-feature 
+      title="Trámites Documentarios" 
+      subtitle="Obtén guías detalladas sobre cómo completar tus trámites"
+      iconUrl="../../../assets/icon/file.svg"
+      buttonText="Ver mi trámite">
+    </app-card-feature>
+    
+    <!-- Tarjeta 3: Respuestas Inmediatas -->
+    <app-card-feature 
+      title="Respuestas Inmediatas" 
+      subtitle="Disponible 24/7 para resolver tus dudas de forma rápida"
+      iconUrl="../../../assets/icon/chat.svg"> <!-- Usar la URL real aquí -->
+    </app-card-feature>
+</div>
+
+  </section>
+
+
+  <div class="how-it-works-container">
+    <h2 class="title">¿Cómo funciona?</h2>
+    
+    <div class="steps-list">
+        <div class="step-item">
+            <div class="step-number">1</div>
+            <p class="step-text">Haz clic en "Iniciar Conversación" para comenzar</p>
+        </div>
+        <div class="step-item">
+            <div class="step-number">2</div>
+            <p class="step-text">Escribe tu pregunta sobre el trámite que necesitas realizar</p>
+        </div>
+        <div class="step-item">
+            <div class="step-number">3</div>
+            <p class="step-text">Recibe información detallada y sigue las instrucciones paso a paso</p>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>

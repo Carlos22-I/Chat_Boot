@@ -1,0 +1,242 @@
+/*====Contenedor con marca de agua de imagen======*/
+.hero-container {
+    /* El color azul base, visible a través de la transparencia */
+    background-color: #052f83;
+    margin-top: 1rem;
+
+    /* Ruta de la imagen de fondo (ajustada para src/assets/img-hero.jpg) */
+    background-image: url('../../../assets/img-hero.avif');
+    background-size: 100%;
+    background-position: center;
+    background-repeat: repeat;
+
+    /* Propiedad blend-mode */
+    background-blend-mode: overlay;
+
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Capa de overlay azul semitransparente para el efecto "marca de agua" */
+.hero-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(5, 47, 131, 0.85);
+    z-index: 1;
+}
+
+/* Contenedor del texto (asegura que el texto esté visible sobre el overlay) */
+.hero-container .content-wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+}
+
+/* ... el resto de tu código CSS ... */
+
+
+
+
+
+
+
+/*====Bloque de uno======*/
+.main-title {
+    font-size: 2rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.description-text {
+    font-size: 1rem;
+    color: #E3F2FD;
+    margin: 0 0 0.5rem 0;
+}
+
+.chat-icon {
+    width: 50px;
+    /* Tamaño de la imagen como en el diseño */
+    height: auto;
+    margin: 0 auto 0rem auto;
+    /* Centra la imagen y añade espacio abajo */
+    /* Nota: Si el SVG es de color negro por defecto, puedes añadir 'filter: invert(27%) sepia(85%) saturate(3062%) hue-rotate(196deg) brightness(98%) contrast(92%);' 
+       para convertirlo a azul si es necesario. */
+}
+
+
+
+
+
+/* Estilos para el contenedor principal de la tarjeta */
+.chat-card-container {
+    background-color: white;
+    border-radius: 10px;
+    /* Esquinas redondeadas suaves */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil */
+    padding: 3rem;
+    /* Espaciado interno */
+    text-align: center;
+    /* Centra todo el contenido horizontalmente */
+    max-width: 963px;
+    /* Limita el ancho de la tarjeta como en la imagen */
+    margin: 0 auto;
+    /* Centra la tarjeta en la sección container */
+}
+
+
+.chat-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+}
+
+.chat-subtitle {
+    font-size: 0.9rem;
+    color: #6b7a8a;
+    margin: 0 0 1.5rem 0;
+    /* Espacio antes del botón */
+    line-height: 1.4;
+}
+
+.button-wrapper {
+    /* Asegura que el botón se centre */
+    display: flex;
+    justify-content: center;
+}
+
+.chat-button {
+    /* El botón azul que se ve en la imagen */
+    background-color: #052f83;
+    border: none;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 0.7rem;
+    /* Bordes redondeados tipo píldora */
+    cursor: pointer;
+    text-decoration: none;
+    /* Si usas 'a' tag en lugar de 'button' */
+}
+
+
+
+
+/* Asegura que la sección principal no tenga padding interno que lo estropee */
+.container.home-section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+
+
+
+
+
+
+/*===========================================================*/
+/*===========================================================*/
+/*===========================================================*/
+.feature-grid-container {
+    display: grid;
+    /* Define 3 columnas exactamente de 330px de ancho */
+    grid-template-columns: 335px 335px 335px;
+    /* Define la separación entre columnas y filas */
+    gap: 25px;
+    /* Añade el margen superior que tenías antes */
+    margin-top: 1.5rem;
+
+    /* Centra las 3 tarjetas si hay espacio extra en la pantalla */
+    justify-content: center;
+    color: #052f83;
+}
+
+/* Puedes añadir media queries si quieres que esto sea responsive en móviles */
+@media (max-width: 1050px) {
+    .feature-grid-container {
+        /* Permite que las columnas se ajusten si la pantalla es muy pequeña */
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        justify-content: center;
+    }
+}
+
+
+
+
+/*===========================*/
+/*===========================*/
+/*===========================*/
+/*===========================*/
+.how-it-works-container {
+    background-color: #f1f7fe;
+    /* Fondo azul muy claro de la imagen */
+    border-radius: 10px;
+    /* Esquinas redondeadas */
+    padding: 2rem;
+    /* Espaciado interno */
+    margin-top: 2rem;
+    /* Espacio por encima si lo necesitas */
+    max-width: 990px;
+    /* Limita el ancho del contenedor si es necesario */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.title {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0 0 1.5rem 0;
+    /* Espacio debajo del título */
+    text-align: center;
+    /* Centra el título */
+}
+
+.steps-list {
+    display: flex;
+    flex-direction: column;
+    /* Apila los pasos verticalmente */
+    gap: 1.5rem;
+    /* Espacio entre cada paso */
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    /* Alinea el número y el texto verticalmente */
+    gap: 1rem;
+    /* Espacio entre el círculo azul y el texto */
+}
+
+.step-number {
+    background-color: #052f83;
+    /* Color azul de los círculos */
+    color: white;
+    border-radius: 50%;
+    /* Forma circular */
+    width: 28px;
+    /* Tamaño del círculo */
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    /* Evita que el círculo se encoja en pantallas pequeñas */
+}
+
+.step-text {
+    color: #4a4a4a;
+    /* Color del texto */
+    margin: 0;
+    line-height: 1.4;
+}

@@ -1,0 +1,166 @@
+<app-navbar></app-navbar>
+
+<!--  Header del Chat (como React) -->
+<header class="chat-header">
+  <div class="chat-header-content">
+    <div class="chat-header-info">
+      <div class="bot-avatar-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8V4H8"/>
+          <rect width="16" height="12" x="4" y="8" rx="2"/>
+          <path d="M2 14h2"/>
+          <path d="M20 14h2"/>
+          <path d="M15 13v2"/>
+          <path d="M9 13v2"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="chat-title">Tutor de Trámites Documentarios</h1>
+        <p class="chat-status">En línea</p>
+      </div>
+    </div>
+    
+    
+    
+  </div>
+</header>
+
+<!--  Contenedor Principal del Chat -->
+<section class="chat-container">
+  
+  <!--  Área de Mensajes -->
+  <div #messagesContainer class="messages-area">
+    <div class="messages-list">
+
+      <!--  Mensaje de Bienvenida -->
+      <div class="message-item bot-message">
+        <div class="message-avatar bot-avatar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8V4H8"/>
+            <rect width="16" height="12" x="4" y="8" rx="2"/>
+            <path d="M2 14h2"/>
+            <path d="M20 14h2"/>
+            <path d="M15 13v2"/>
+            <path d="M9 13v2"/>
+          </svg>
+        </div>
+        
+        <div class="message-content-wrapper">
+          <div class="message-bubble bot-bubble">
+            <p>👋 ¡Hola! Soy tu tutor académico de la UNAMBA. ¿En qué trámite documentario puedo ayudarte hoy?</p>
+          </div>
+        </div>
+      </div>
+
+      <!--  Mensajes del Usuario y Bot -->
+      <div *ngFor="let message of messages"
+           class="message-item"
+           [ngClass]="{
+             'user-message': message.sender === 'user',
+             'bot-message': message.sender === 'bot'
+           }">
+
+        <!-- Avatar -->
+        <div class="message-avatar"
+             [ngClass]="{
+               'user-avatar': message.sender === 'user',
+               'bot-avatar': message.sender === 'bot'
+             }">
+          <!-- Icono Usuario -->
+          <svg *ngIf="message.sender === 'user'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          
+          <!-- Icono Bot -->
+          <svg *ngIf="message.sender === 'bot'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8V4H8"/>
+            <rect width="16" height="12" x="4" y="8" rx="2"/>
+            <path d="M2 14h2"/>
+            <path d="M20 14h2"/>
+            <path d="M15 13v2"/>
+            <path d="M9 13v2"/>
+          </svg>
+        </div>
+
+        <!-- Contenido del Mensaje -->
+        <div class="message-content-wrapper">
+          <div class="message-bubble"
+               [ngClass]="{
+                 'user-bubble': message.sender === 'user',
+                 'bot-bubble': message.sender === 'bot'
+               }">
+            <div [innerHTML]="message.text | textFormat"></div>
+          </div>
+          
+          <p class="message-timestamp">
+            {{ message.timestamp | date:'shortTime' }}
+          </p>
+        </div>
+      </div>
+
+      <!--  Indicador de Carga (Typing) -->
+      <div *ngIf="cargando" class="message-item bot-message">
+        <div class="message-avatar bot-avatar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8V4H8"/>
+            <rect width="16" height="12" x="4" y="8" rx="2"/>
+            <path d="M2 14h2"/>
+            <path d="M20 14h2"/>
+            <path d="M15 13v2"/>
+            <path d="M9 13v2"/>
+          </svg>
+        </div>
+        
+        <div class="message-content-wrapper">
+          <div class="message-bubble bot-bubble">
+            <div class="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Área de Input (Fixed Bottom) -->
+  <div class="input-area">
+    <div class="input-container">
+      <textarea
+        [(ngModel)]="newMessageText"
+        (keydown.enter)="onEnterPress($any($event))"
+        placeholder="Escribe tu pregunta sobre trámites..."
+        class="chat-input"
+        rows="1"
+      ></textarea>
+      
+      <button class="btn-send"
+              (click)="sendMessage()"
+              [disabled]="cargando || !newMessageText.trim()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+    
+    <!--  SOLO botón Descargar Todo (movido aquí) -->
+    <button class="btn-download-conversation"
+            (click)="descargarConversacionCompleta()"
+            [disabled]="messages.length === 0"
+            title="Descargar conversación completa">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Descargar Conversacion
+    </button>
+  </div>
+
+</section>
+
+<app-footer></app-footer>

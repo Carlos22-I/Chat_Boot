@@ -1,0 +1,255 @@
+<!-- Logo Universidad -->
+<div class="uni-header">
+  <img src="assets/logo.png" alt="UNAMBA" class="uni-logo">
+</div>
+
+<!-- Navbar Admin -->
+<header class="admin-navbar">
+  <div class="admin-navbar-left">
+    <h1>Panel de Administrador</h1>
+    <p>Gestión de Documentos PDF</p>
+  </div>
+
+  <button class="logout-btn" (click)="logout()">
+    <svg class="logout-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      <polyline points="16 17 21 12 16 7"/>
+      <line x1="21" y1="12" x2="9" y2="12"/>
+    </svg>
+    <span class="logout-text">Cerrar Sesión</span>
+  </button>
+</header>
+
+<div class="dashboard-container">
+
+  <!-- Sección: Subir Documentos -->
+  <section class="upload-section">
+    <h2 class="section-title">Subir Nuevos Documentos</h2>
+
+    <div class="upload-card">
+      <div class="upload-grid">
+        
+        <!-- ✅ Selector de categoría (1 columna) - IZQUIERDA -->
+        <div class="category-selector">
+          <label class="category-label">Categoría:</label>
+          <select 
+            [(ngModel)]="categoriaSeleccionada" 
+            class="category-select"
+            [disabled]="isLoading"
+          >
+            <option value="Grados y Títulos">Grados y Títulos</option>
+            <option value="Certificados">Certificados</option>
+            <option value="Constancias">Constancias</option>
+            <option value="Traslados">Traslados</option>
+            <option value="General">General</option>
+          </select>
+        </div>
+
+        <!-- ✅ Área de carga (3 columnas) - DERECHA -->
+        <div 
+          class="upload-area"
+          [class.dragging]="isDragging"
+          [class.loading]="isLoading"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)"
+        >
+          <svg 
+            class="upload-icon" 
+            [class.animate]="isLoading"
+            xmlns="http://www.w3.org/2000/svg" 
+            width="48" 
+            height="48" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          
+          <p class="upload-text" *ngIf="!isLoading">
+            {{ isDragging ? '📥 Suelta los archivos aquí' : 'Arrastra archivos PDF aquí o haz clic para seleccionar' }}
+          </p>
+          <p class="upload-text loading-text" *ngIf="isLoading">
+            ⏳ Subiendo archivos...
+          </p>
+          
+          <input
+            type="file"
+            id="file-upload"
+            accept="application/pdf"
+            multiple
+            class="file-input-hidden"
+            (change)="onFile($event)"
+            [disabled]="isLoading"
+          />
+
+          <label 
+            for="file-upload" 
+            class="upload-button"
+            [class.disabled]="isLoading"
+          >
+            {{ isLoading ? 'Procesando...' : 'Seleccionar Archivos' }}
+          </label>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección: Filtros -->
+  <section class="filters-section">
+    <div class="filters-grid">
+      <!-- Búsqueda -->
+      <div class="search-wrapper">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input
+          type="text"
+          placeholder="Buscar documentos..."
+          class="search-input"
+          [(ngModel)]="busqueda"
+          (input)="filtrar()"
+        />
+      </div>
+
+      <!-- Filtro por categoría -->
+      <select [(ngModel)]="filtroCategoria" (change)="filtrar()" class="category-filter">
+        <option value="Todos">Todas las categorías</option>
+        <option value="Grados y Títulos">Grados y Títulos</option>
+        <option value="Certificados">Certificados</option>
+        <option value="Constancias">Constancias</option>
+        <option value="Traslados">Traslados</option>
+        <option value="General">General</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Sección: Lista de Documentos -->
+  <section class="documents-section">
+    <div class="documents-header">
+      <h2 class="documents-title">Documentos Subidos ({{ filesFiltrados.length }})</h2>
+    </div>
+
+    <div class="documents-list" *ngIf="filesFiltrados.length > 0; else noDocuments">
+      <div class="document-item" *ngFor="let file of filesFiltrados">
+        <div class="document-info">
+          <div class="document-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          <div class="document-details">
+            <h3 class="document-name">{{ file.name }}</h3>
+            <div class="document-meta">
+              <span>{{ file.size }}</span>
+              <span>•</span>
+              <span>{{ file.date }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="document-category">
+          <span class="category-badge">• {{ file.category }}</span>
+        </div>
+
+        <div class="document-actions">
+          <button class="action-btn view-btn" (click)="verDocumento(file.id)" title="Ver">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <span>VER</span>
+          </button>
+          <button class="action-btn download-btn" (click)="descargarDocumento(file.id)" title="Descargar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span>DESCARGAR</span>
+          </button>
+          <button class="action-btn update-btn" (click)="seleccionarArchivoActualizar(file.id)" title="Actualizar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span>ACTUALIZAR</span>
+          </button>
+          <button class="action-btn delete-btn" (click)="eliminar(file.id)" title="Eliminar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            <span>ELIMINAR</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noDocuments>
+      <div class="no-documents">
+        <svg class="no-docs-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+        <p>No se encontraron documentos</p>
+      </div>
+    </ng-template>
+  </section>
+
+  <!-- Estadísticas -->
+  <section class="stats-section">
+    <div class="stat-card">
+      <div class="stat-icon blue">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Total Documentos</p>
+        <p class="stat-value">{{ files.length }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon green">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Subidos Hoy</p>
+        <p class="stat-value">{{ documentosSubidosHoy() }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon purple">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Categorías</p>
+        <p class="stat-value">{{ totalCategorias() }}</p>
+      </div>
+    </div>
+  </section>
+
+</div>

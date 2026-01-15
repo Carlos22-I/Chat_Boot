@@ -1,0 +1,93 @@
+.feature-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
+}
+
+.icon-container {
+    background-color: #E3F2FD; /* Fondo azul muy claro */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 1rem auto; /* Centra y da espacio */
+}
+
+.feature-icon {
+    /* Aquí definimos el tamaño base del icono */
+    width: 24px;
+    height: 24px;
+    /* Color azul del icono */
+    background-color: #052f83; 
+    /* Usaremos una técnica para usar el color como máscara/imagen de fondo */
+}
+
+.feature-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+}
+
+.feature-subtitle {
+    font-size: 0.875rem;
+    color: #6b7a8a;
+    margin: 0 0 1rem 0; /* Espacio antes del botón */
+    line-height: 1.4;
+    flex-grow: 1; /* Empuja el botón hacia abajo si el texto es corto */
+}
+
+/* Estilo del botón (similar al anterior, pero solo para este componente) */
+.btn-primary {
+    background-color: #052f83;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+    display: inline-block;
+}
+
+
+
+
+/*=============TRES TARJETA=====================*/
+/*==============================================*/
+.feature-card {
+    background-color: white(237, 237, 237);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); 
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Estilos para la imagen del icono */
+.feature-icon-img {
+    width: 30px;       /* El tamaño del icono */
+    height: auto;      /* Mantiene la proporción */
+    margin: 0 auto 1rem auto; /* Centra la imagen y da espacio debajo */
+    background-color: #E3F2FD; /* Fondo azul claro detrás del icono si es transparente */
+    border-radius: 50%; /* Si quieres el círculo de fondo */
+    padding: 10px; /* Ajusta el padding para que el icono quepa en el círculo */
+}
+
+.feature-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+}
+
+/* ... (El resto de estilos de subtítulo y botón) ... */

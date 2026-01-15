@@ -1,0 +1,130 @@
+.register-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #f4f7fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding:  20px; //  Agregado padding para que suba
+}
+
+.card {
+  width: 380px;
+  background: #fff;
+  padding: 35px 30px;
+  border-radius: 18px;
+  box-shadow: 0px 5px 18px rgba(0,0,0,0.1);
+  text-align: center;
+  margin-top: -120px; //  ESTO SUBE EL FORMULARIO
+}
+
+//  NUEVO: Ícono del escudo
+.icon-shield {
+  width: 64px;
+  height: 64px;
+  background: rgba(5, 47, 131, 0.1); // Color azul UNAMBA con transparencia
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+
+  svg {
+    width: 32px;
+    height: 32px;
+    color: #052f83; // Color azul UNAMBA
+  }
+}
+
+.logo img {
+  width: 85px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin: 0;
+  margin-bottom: 5px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.sub {
+  margin-bottom: 25px;
+  font-size: 14px;
+  color: #666;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  outline: none;
+  font-size: 14px;
+  box-sizing: border-box; // Agregado para evitar overflow
+}
+
+input:focus {
+  border-color: #052f83; //  CAMBIADO al color azul UNAMBA
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #052f83; //  CAMBIADO al color azul UNAMBA
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 500; //  Agregado peso
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #041f5c; //  CAMBIADO al hover más oscuro
+}
+
+button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #d93025;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.login-texto-container {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #6b7a8a;
+}
+
+.login-link-container {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #052f83; //  CAMBIADO al color azul UNAMBA
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline-block;
+  
+  &:hover {
+    color: #041f5c;
+  }
+}

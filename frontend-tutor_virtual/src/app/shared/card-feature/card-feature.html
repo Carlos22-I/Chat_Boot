@@ -1,0 +1,12 @@
+<div class="feature-card">
+  <!-- Contenedor del icono azul -->
+ <img [src]="iconUrl" alt="Icono de característica" class="feature-icon-img">
+
+  <h3 class="feature-title">{{ title }}</h3>
+  <p class="feature-subtitle">{{ subtitle }}</p>
+
+  <!-- Si existe un texto de botón, muestra el botón -->
+  <a *ngIf="buttonText" href="https://tramite.unamba.edu.pe/login?ReturnUrl=%2F" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+    {{ buttonText }}
+  </a>
+</div>

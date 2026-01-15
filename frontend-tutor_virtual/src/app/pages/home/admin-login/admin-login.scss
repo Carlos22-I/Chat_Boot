@@ -1,0 +1,251 @@
+.login-section {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9fafb;
+  padding: 2rem 1rem;
+}
+
+.login-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  padding: 2.5rem;
+  margin-top: -100px; // ✅ SUBE EL FORMULARIO MÁS ARRIBA
+}
+
+// Icono del Escudo
+.shield-icon-container {
+  width: 80px; // ✅ MÁS GRANDE
+  height: 80px; // ✅ MÁS GRANDE
+  background-color: rgba(5, 47, 131, 0.1);
+  border-radius: 50%;
+  margin: 0 auto 1.5rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .shield-icon {
+    color: #052f83;
+    width: 40px; // ✅ MÁS GRANDE
+    height: 40px; // ✅ MÁS GRANDE
+  }
+}
+
+// Títulos
+.title {
+  font-size: 2rem; // ✅ MÁS GRANDE
+  font-weight: 700; // ✅ MÁS BOLD
+  color: #111827; // ✅ MÁS OSCURO
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.025em; // ✅ Mejor legibilidad
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 1rem; // ✅ MÁS GRANDE
+  margin: 0 0 2rem 0;
+  line-height: 1.5;
+}
+
+// Mensaje de Error
+.error-message {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9375rem; // ✅ MÁS GRANDE
+  font-weight: 500;
+}
+
+// Formulario
+.login-form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    font-size: 0.9375rem; // ✅ MÁS GRANDE
+    font-weight: 600; // ✅ MÁS BOLD
+    color: #111827; // ✅ MÁS OSCURO
+    margin-bottom: 0.5rem;
+  }
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .input-icon {
+    position: absolute;
+    left: 12px;
+    color: #9ca3af;
+    pointer-events: none;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.app-input {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 2.75rem; // ✅ MÁS PADDING
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  transition: all 0.2s;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #052f83;
+    box-shadow: 0 0 0 3px rgba(5, 47, 131, 0.1);
+  }
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+}
+
+// Botón de Login
+.login-button {
+  width: 100%;
+  background-color: #052f83;
+  color: white;
+  padding: 0.875rem 1rem; // ✅ MÁS PADDING
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600; // ✅ MÁS BOLD
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
+
+  &:hover:not(:disabled) {
+    background-color: #041f5c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(5, 47, 131, 0.3);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+  }
+
+  .button-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid white;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Credenciales de Prueba
+.credentials-box {
+  margin-top: 1.5rem;
+  background-color: rgba(5, 47, 131, 0.05);
+  border: 1px solid rgba(5, 47, 131, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: left;
+
+  .creds-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .creds-info {
+    font-size: 0.875rem;
+    color: #374151;
+    margin: 0.25rem 0;
+
+    code {
+      background-color: white;
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8125rem;
+    }
+  }
+}
+
+// Sección de Registro
+.register-section {
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb; // ✅ LÍNEA SEPARADORA
+  font-size: 0.9375rem;
+
+  .register-text {
+    color: #6b7280;
+  }
+
+  .register-link {
+    background: none;
+    border: none;
+    color: #052f83;
+    font-weight: 600; // ✅ MÁS BOLD
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s;
+    font-size: 0.9375rem;
+
+    &:hover {
+      color: #041f5c;
+      text-decoration: underline;
+    }
+  }
+}
+
+// ✅ Responsive
+@media (max-width: 640px) {
+  .login-card {
+    padding: 2rem 1.5rem;
+    margin-top: -60px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.9375rem;
+  }
+}

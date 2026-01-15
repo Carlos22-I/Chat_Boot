@@ -1,0 +1,581 @@
+// ==========================================
+// HEADER UNIVERSIDAD
+// ==========================================
+.uni-header {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.5rem 2rem;
+}
+
+.uni-logo {
+  height: 60px;
+  width: auto;
+}
+
+// ==========================================
+// NAVBAR ADMIN
+// ==========================================
+.admin-navbar {
+  background: #052f83;
+  color: white;
+  padding: 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.admin-navbar-left {
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .logout-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .logout-text {
+    font-size: 0.875rem;
+    
+    @media (max-width: 640px) {
+      display: none;
+    }
+  }
+}
+
+// ==========================================
+// CONTENEDOR PRINCIPAL
+// ==========================================
+.dashboard-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+// ==========================================
+// SECCIÓN: SUBIR DOCUMENTOS
+// ==========================================
+.upload-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+}
+
+.upload-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+// ✅ GRID MODIFICADO: Categoría primero (1fr), luego área de carga (3fr)
+.upload-grid {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ✅ Selector de categoría (ahora a la izquierda)
+.category-selector {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .category-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+  }
+
+  .category-select {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #052f83;
+      box-shadow: 0 0 0 3px rgba(5, 47, 131, 0.1);
+    }
+
+    &:disabled {
+      background: #f3f4f6;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
+
+// ✅ Área de carga con Drag & Drop (ahora a la derecha)
+.upload-area {
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 2rem 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover:not(.loading) {
+    border-color: #052f83;
+    background: rgba(5, 47, 131, 0.02);
+  }
+
+  // ✅ Estado cuando se arrastra
+  &.dragging {
+    border-color: #052f83;
+    background: rgba(5, 47, 131, 0.08);
+    border-style: solid;
+    transform: scale(1.02);
+
+    .upload-icon {
+      color: #052f83;
+      transform: scale(1.1);
+    }
+
+    .upload-text {
+      color: #052f83;
+      font-weight: 600;
+    }
+  }
+
+  // ✅ Estado de carga
+  &.loading {
+    border-color: #9ca3af;
+    background: #f9fafb;
+    pointer-events: none;
+
+    .upload-icon {
+      color: #6b7280;
+    }
+  }
+
+  .upload-icon {
+    color: #9ca3af;
+    margin: 0 auto 1rem auto;
+    transition: all 0.3s ease;
+
+    // ✅ Animación durante carga
+    &.animate {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+  }
+
+  .upload-text {
+    color: #6b7280;
+    margin: 0 0 1rem 0;
+    font-size: 0.9375rem;
+    transition: all 0.3s ease;
+
+    &.loading-text {
+      color: #6b7280;
+      font-weight: 500;
+    }
+  }
+
+  .file-input-hidden {
+    display: none;
+  }
+
+  .upload-button {
+    background: #052f83;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-block;
+
+    &:hover:not(.disabled) {
+      background: #041f5c;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    &.disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
+
+// ✅ Animación de pulso
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+// ==========================================
+// SECCIÓN: FILTROS
+// ==========================================
+.filters-section {
+  margin-bottom: 2rem;
+}
+
+.filters-grid {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.search-wrapper {
+  position: relative;
+
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.625rem 1rem 0.625rem 2.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: #052f83;
+      box-shadow: 0 0 0 3px rgba(5, 47, 131, 0.1);
+    }
+  }
+}
+
+.category-filter {
+  padding: 0.625rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #052f83;
+    box-shadow: 0 0 0 3px rgba(5, 47, 131, 0.1);
+  }
+}
+
+// ==========================================
+// SECCIÓN: LISTA DE DOCUMENTOS
+// ==========================================
+.documents-section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.documents-header {
+  padding: 1rem 1.5rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+
+  .documents-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+  }
+}
+
+.documents-list {
+  // Sin padding para que los items ocupen todo el ancho
+}
+
+.document-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: #f9fafb;
+  }
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+.document-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.document-icon {
+  background: #dbeafe;
+  padding: 0.75rem;
+  border-radius: 8px;
+  flex-shrink: 0;
+
+  svg {
+    color: #1e40af;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.document-details {
+  min-width: 0;
+  flex: 1;
+
+  .document-name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1f2937;
+    margin: 0 0 0.25rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .document-meta {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+}
+
+.document-category {
+  .category-badge {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    background: rgba(5, 47, 131, 0.1);
+    color: #052f83;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}
+
+.document-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+
+  @media (max-width: 1024px) {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.view-btn {
+    color: #7c3aed;
+    background: transparent;
+
+    &:hover {
+      background: #f5f3ff;
+    }
+  }
+
+  &.download-btn {
+    color: #1d4ed8;
+    background: transparent;
+
+    &:hover {
+      background: #dbeafe;
+    }
+  }
+
+  &.update-btn {
+    color: #059669;
+    background: transparent;
+
+    &:hover {
+      background: #d1fae5;
+    }
+  }
+
+  &.delete-btn {
+    color: #dc2626;
+    background: transparent;
+
+    &:hover {
+      background: #fee2e2;
+    }
+  }
+}
+
+.no-documents {
+  padding: 3rem 1.5rem;
+  text-align: center;
+
+  .no-docs-icon {
+    color: #d1d5db;
+    margin: 0 auto 1rem auto;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+}
+
+// ==========================================
+// SECCIÓN: ESTADÍSTICAS
+// ==========================================
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-icon {
+  padding: 0.75rem;
+  border-radius: 8px;
+  flex-shrink: 0;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.blue {
+    background: #dbeafe;
+
+    svg {
+      color: #1e40af;
+    }
+  }
+
+  &.green {
+    background: #d1fae5;
+
+    svg {
+      color: #059669;
+    }
+  }
+
+  &.purple {
+    background: #f5f3ff;
+
+    svg {
+      color: #7c3aed;
+    }
+  }
+}
+
+.stat-content {
+  .stat-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+  }
+}

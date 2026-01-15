@@ -1,0 +1,85 @@
+<app-navbar></app-navbar>
+<div class="register-container">
+
+  <div class="card">
+    
+    <!-- ✅ NUEVO: Ícono del escudo -->
+    <div class="icon-shield">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+    </div>
+
+    <h2>Registrar Administrador</h2>
+    <p class="sub">Complete el formulario para crear una nueva cuenta</p>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label>Nombres</label>
+        <input type="text" formControlName="nombres" placeholder="Ingrese su nombre completo">
+        <span class="error" *ngIf="registerForm.get('nombres')?.touched && registerForm.get('nombres')?.invalid">
+          * Campo obligatorio (mínimo 3 caracteres)
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre de Usuario</label>
+        <input type="text" formControlName="usuario" placeholder="Ingrese su usuario">
+        <span class="error" *ngIf="registerForm.get('usuario')?.touched && registerForm.get('usuario')?.invalid">
+          * Campo obligatorio (mínimo 4 caracteres)
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>Correo Electronico</label>
+        <input 
+          type="email" 
+          formControlName="correo" 
+          placeholder="correo@ejemplo.com"
+          (blur)="onEmailChange()"
+        >
+        
+        <!-- ✅ Mensaje de validación en tiempo real -->
+        <span class="validation-message" *ngIf="emailValidationMessage">
+          {{ emailValidationMessage }}
+        </span>
+        
+        <span class="error" *ngIf="registerForm.get('correo')?.touched && registerForm.get('correo')?.invalid && !emailValidationMessage">
+          * Ingrese un correo válido
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" formControlName="password" placeholder="Mínimo 6 caracteres">
+        <span class="error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+          * Campo obligatorio (mínimo 6 caracteres)
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>Confirmar Contraseña</label>
+        <input type="password" formControlName="confirmPassword" placeholder="Confirme su contraseña">
+        <span class="error"
+          *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
+          * Las contraseñas no coinciden
+        </span>
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid">Crear Cuenta</button>
+      
+      <br>
+      <br>
+      
+      <div class="login-texto-container">
+        <span>Ya tienes una cuenta?</span>
+      </div>
+      <a class="login-link-container" (click)="goLogin()">
+        Ingresa Aqui
+      </a>
+
+    </form>
+  </div>
+
+</div>
