@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/frontend-tutor-virtual",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -28,11 +29,11 @@
                 "glob": "**/*",
                 "input": "public"
               },
-                {
-                  "glob": "**/*",
-                  "input": "src/assets", 
-                  "output": "assets"
-                }
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              }
             ],
             "styles": [
               "src/styles.scss"
