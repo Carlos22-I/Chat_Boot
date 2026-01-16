@@ -1,33 +1,37 @@
 import { Routes } from '@angular/router';
-
-import { Home } from './pages/home/home';
-import { AdminLogin } from './pages/home/admin-login/admin-login';
-import { AdminRegister } from './pages/admin-register/admin-register';
-import { AdminDashboard } from './pages/admin-dashboard/admin-dashboard';
-import { UploadDocuments } from './pages/upload-documents/upload-documents';
-import { ChatTutor } from './pages/chat-tutor/chat-tutor';
-
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: Home },
+  {
+    path: '',
+    loadComponent: () => import('./pages/home/home').then(m => m.Home)
+  },
   { path: '', redirectTo: 'admin-login', pathMatch: 'full' },
 
-  { path: 'admin-login', component: AdminLogin },
-  { path: 'admin-register', component: AdminRegister },
+  {
+    path: 'admin-login',
+    loadComponent: () => import('./pages/home/admin-login/admin-login').then(m => m.AdminLogin)
+  },
+  {
+    path: 'admin-register',
+    loadComponent: () => import('./pages/admin-register/admin-register').then(m => m.AdminRegister)
+  },
 
   {
     path: 'admin-dashboard',
-    component: AdminDashboard,
+    loadComponent: () => import('./pages/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard),
     canActivate: [AuthGuard]
   },
   {
     path: 'admin-upload',
-    component: UploadDocuments,
+    loadComponent: () => import('./pages/upload-documents/upload-documents').then(m => m.UploadDocuments),
     canActivate: [AuthGuard]
   },
 
-  { path: 'chat-tutor', component: ChatTutor },
+  {
+    path: 'chat-tutor',
+    loadComponent: () => import('./pages/chat-tutor/chat-tutor').then(m => m.ChatTutor)
+  },
 
   { path: '**', redirectTo: '' }
 ];

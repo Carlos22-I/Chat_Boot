@@ -3,6 +3,8 @@ package com.tutorvirtual.tutorvirtual_backend.service.documento;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ public class DocumentoService {
     }
 
     @Transactional(timeout = 120) // 2 minutos para archivos grandes
+    @CacheEvict(value = "documentos", allEntries = true)
     public Documento guardarDocumento(Documento documento) {
         return documentoRepository.save(documento);
     }
@@ -27,6 +30,7 @@ public class DocumentoService {
         return documentoRepository.existsByNombreArchivo(nombre);
     }
 
+    @CacheEvict(value = "documentos", allEntries = true)
     public void eliminarDocumento(Long id) {
         documentoRepository.deleteById(id);
     }
@@ -45,6 +49,7 @@ public class DocumentoService {
         return documentoRepository.contarPorFecha(fechaHoy);
     }
 
+    @Cacheable("documentos")
     public List<Documento> listarDocumentos() {
         return documentoRepository.findAll();
     }
