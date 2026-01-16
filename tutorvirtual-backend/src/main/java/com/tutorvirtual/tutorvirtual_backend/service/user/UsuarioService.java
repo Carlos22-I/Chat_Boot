@@ -1,4 +1,5 @@
 package com.tutorvirtual.tutorvirtual_backend.service.user;
+
 import java.util.Optional;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +20,7 @@ public class UsuarioService {
 
     // Login con EMAIL
     public Usuario login(String email, String contraseña) {
-        
+
         Optional<Usuario> userOptional = usuarioRepository.findByEmail(email);
 
         if (userOptional.isEmpty()) {
@@ -35,12 +36,19 @@ public class UsuarioService {
         return null;
     }
 
-    //  Registro con validación de email
+    // Registro con validación de email
     public Usuario registrar(Usuario usuario) {
 
-        // Validar email duplicado
-        if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
-            throw new RuntimeException("El email ya está registrado");
+        boolean correoExiste = usuarioRepository.findByEmail(usuario.getEmail()).isPresent();
+        boolean usuarioExiste = usuarioRepository.findByNombreUsuario(usuario.getNombreUsuario()).isPresent();
+
+        if (correoExiste && usuarioExiste) {
+            throw new RuntimeException("El correo: " + usuario.getEmail() + " y el nombre de usuario: "
+                    + usuario.getNombreUsuario() + " ya existen");
+        } else if (correoExiste) {
+            throw new RuntimeException("El correo: " + usuario.getEmail() + " ya existe");
+        } else if (usuarioExiste) {
+            throw new RuntimeException("El nombre de usuario: " + usuario.getNombreUsuario() + " ya existe");
         }
 
         // Validar formato de email
@@ -48,7 +56,6 @@ public class UsuarioService {
             throw new RuntimeException("Email inválido");
         }
 
-        
         // Encriptar contraseña
         usuario.setContraseña(passwordEncoder.encode(usuario.getContraseña()));
 

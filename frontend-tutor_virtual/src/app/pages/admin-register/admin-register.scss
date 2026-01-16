@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding:  20px; //  Agregado padding para que suba
+  padding: 20px; //  Agregado padding para que suba
 }
 
 .card {
@@ -13,7 +13,7 @@
   background: #fff;
   padding: 35px 30px;
   border-radius: 18px;
-  box-shadow: 0px 5px 18px rgba(0,0,0,0.1);
+  box-shadow: 0px 5px 18px rgba(0, 0, 0, 0.1);
   text-align: center;
   margin-top: -120px; //  ESTO SUBE EL FORMULARIO
 }
@@ -102,6 +102,21 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.validation-message {
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  font-weight: 500;
+}
+
+.valid-format {
+  color: #2e7d32; // Verde para formato correcto
+}
+
+.invalid-format {
+  color: #d93025; // Rojo para formato incorrecto o duplicado
+}
+
 .error {
   color: #d93025;
   font-size: 12px;
@@ -123,7 +138,7 @@ button:disabled {
   cursor: pointer;
   text-decoration: underline;
   display: inline-block;
-  
+
   &:hover {
     color: #041f5c;
   }

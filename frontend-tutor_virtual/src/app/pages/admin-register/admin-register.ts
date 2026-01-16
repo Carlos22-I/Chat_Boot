@@ -22,6 +22,8 @@ export class AdminRegister {
 
   isValidatingEmail = false; //  Estado de validación
   emailValidationMessage = ''; //  Mensaje de validación
+  isEmailDomainValid = false; // ✅ Nuevo: Estado de dominio
+  isDomainFormatChecked = false; // ✅ Nuevo: Para saber si ya se validó el formato
 
   registerForm = this.fb.group({
     nombres: ['', [Validators.required, Validators.minLength(3)]],
@@ -42,36 +44,50 @@ export class AdminRegister {
   //  NUEVO: Validar correo cuando el usuario termina de escribir
   onEmailChange(): void {
     const correoControl = this.registerForm.get('correo');
-    const correo = correoControl?.value;
+    const correo = correoControl?.value?.toLowerCase() || '';
 
     // Resetear mensaje
     this.emailValidationMessage = '';
+    this.isEmailDomainValid = false;
+    this.isDomainFormatChecked = true;
 
-    // Si el campo está vacío o inválido, no validar
-    if (!correo || correoControl?.invalid) {
+    // Si el campo está vacío o no tiene formato de email básico, no validar
+    if (!correo || correoControl?.hasError('email')) {
       return;
     }
 
-    // Mostrar que está validando
-    this.isValidatingEmail = true;
-    this.emailValidationMessage = '🔍 Verificando correo...';
+    // 1️⃣ Validar Dominios Permitidos (@gmail.com y @unamba.edu.pe)
+    const allowedDomains = ['@gmail.com', '@unamba.edu.pe'];
+    this.isEmailDomainValid = allowedDomains.some(domain => correo.endsWith(domain));
 
-    // Llamar al servicio de validación
+    if (!this.isEmailDomainValid) {
+      this.emailValidationMessage = '❌ Formato incorrecto';
+      correoControl?.setErrors({ domainInvalid: true });
+      return;
+    }
+
+    this.emailValidationMessage = '✅ Formato correcto';
+
+    // 2️⃣ Validar si el correo ya existe (Llamada al backend)
+    this.isValidatingEmail = true;
+
     this.emailValidator.validarCorreo(correo).subscribe({
-      next: (result: EmailValidationResult) => { // Tipado
+      next: (result: EmailValidationResult) => {
         this.isValidatingEmail = false;
-        
+
         if (result.valido) {
-          this.emailValidationMessage = '✅ ' + result.mensaje;
-          correoControl?.setErrors(null); // Limpiar errores
+          // El backend dice que el correo es válido (no existe)
+          this.emailValidationMessage = '✅ Formato correcto';
+          correoControl?.setErrors(null);
         } else {
+          // El correo ya existe
           this.emailValidationMessage = '❌ ' + result.mensaje;
-          correoControl?.setErrors({ emailInvalido: true }); // Marcar como inválido
+          correoControl?.setErrors({ emailInvalido: true });
         }
       },
-      error: (err: any) => { // Tipado
+      error: (err: any) => {
         this.isValidatingEmail = false;
-        this.emailValidationMessage = '⚠️ No se pudo verificar el correo';
+        this.emailValidationMessage = '⚠️ No se pudo verificar si el correo existe';
         console.error('Error validando correo:', err);
       }
     });
@@ -106,7 +122,8 @@ export class AdminRegister {
       },
       error: (err: any) => { //  Tipado
         console.error(err);
-        alert(err.error || 'Error al registrar usuario');
+        const errorMessage = err.error?.error || 'Error al registrar usuario';
+        alert(errorMessage);
       }
     });
     console.log('PAYLOAD FINAL:', payload);

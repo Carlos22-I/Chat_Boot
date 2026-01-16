@@ -41,11 +41,16 @@
         >
         
         <!-- ✅ Mensaje de validación en tiempo real -->
-        <span class="validation-message" *ngIf="emailValidationMessage">
+        <span class="validation-message" 
+              [ngClass]="{
+                'valid-format': isEmailDomainValid && !registerForm.get('correo')?.hasError('emailInvalido'),
+                'invalid-format': !isEmailDomainValid && isDomainFormatChecked || registerForm.get('correo')?.hasError('emailInvalido')
+              }" 
+              *ngIf="emailValidationMessage">
           {{ emailValidationMessage }}
         </span>
         
-        <span class="error" *ngIf="registerForm.get('correo')?.touched && registerForm.get('correo')?.invalid && !emailValidationMessage">
+        <span class="error" *ngIf="registerForm.get('correo')?.touched && registerForm.get('correo')?.hasError('required')">
           * Ingrese un correo válido
         </span>
       </div>
@@ -67,7 +72,7 @@
         </span>
       </div>
 
-      <button type="submit" [disabled]="registerForm.invalid">Crear Cuenta</button>
+      <button type="submit" [disabled]="registerForm.invalid || !isEmailDomainValid">Crear Cuenta</button>
       
       <br>
       <br>

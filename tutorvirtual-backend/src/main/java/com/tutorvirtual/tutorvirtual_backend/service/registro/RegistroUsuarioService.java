@@ -14,6 +14,18 @@ public class RegistroUsuarioService {
     }
 
     public RegistroUsuario registrar(RegistroUsuario usuario) {
+        boolean correoExiste = registroUsuarioRepository.findByCorreo(usuario.getCorreo()).isPresent();
+        boolean usuarioExiste = registroUsuarioRepository.findByNombreUsuario(usuario.getNombreUsuario()).isPresent();
+
+        if (correoExiste && usuarioExiste) {
+            throw new RuntimeException("El correo: " + usuario.getCorreo() + " y el nombre de usuario: "
+                    + usuario.getNombreUsuario() + " ya existen");
+        } else if (correoExiste) {
+            throw new RuntimeException("El correo: " + usuario.getCorreo() + " ya existe");
+        } else if (usuarioExiste) {
+            throw new RuntimeException("El nombre de usuario: " + usuario.getNombreUsuario() + " ya existe");
+        }
+
         return registroUsuarioRepository.save(usuario);
     }
 }
