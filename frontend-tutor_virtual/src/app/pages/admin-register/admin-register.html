@@ -2,10 +2,11 @@
 <div class="register-container">
 
   <div class="card">
-    
+
     <!-- ✅ NUEVO: Ícono del escudo -->
     <div class="icon-shield">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
       </svg>
     </div>
@@ -33,24 +34,18 @@
 
       <div class="form-group">
         <label>Correo Electronico</label>
-        <input 
-          type="email" 
-          formControlName="correo" 
-          placeholder="correo@ejemplo.com"
-          (blur)="onEmailChange()"
-        >
-        
+        <input type="email" formControlName="correo" placeholder="correo@ejemplo.com" (blur)="onEmailChange()">
+
         <!-- ✅ Mensaje de validación en tiempo real -->
-        <span class="validation-message" 
-              [ngClass]="{
+        <span class="validation-message" [ngClass]="{
                 'valid-format': isEmailDomainValid && !registerForm.get('correo')?.hasError('emailInvalido'),
                 'invalid-format': !isEmailDomainValid && isDomainFormatChecked || registerForm.get('correo')?.hasError('emailInvalido')
-              }" 
-              *ngIf="emailValidationMessage">
+              }" *ngIf="emailValidationMessage">
           {{ emailValidationMessage }}
         </span>
-        
-        <span class="error" *ngIf="registerForm.get('correo')?.touched && registerForm.get('correo')?.hasError('required')">
+
+        <span class="error"
+          *ngIf="registerForm.get('correo')?.touched && registerForm.get('correo')?.hasError('required')">
           * Ingrese un correo válido
         </span>
       </div>
@@ -72,11 +67,24 @@
         </span>
       </div>
 
+      <div class="form-group">
+        <label>Clave de Invitación (Tutor)</label>
+        <input type="password" formControlName="claveTutor" placeholder="Ingrese la clave autorizada">
+        <span class="error"
+          *ngIf="registerForm.get('claveTutor')?.touched && registerForm.get('claveTutor')?.hasError('required')">
+          * La clave de invitación es obligatoria
+        </span>
+        <span class="error"
+          *ngIf="registerForm.get('claveTutor')?.touched && registerForm.get('claveTutor')?.hasError('invalidTutorKey')">
+          * Clave de invitación incorrecta
+        </span>
+      </div>
+
       <button type="submit" [disabled]="registerForm.invalid || !isEmailDomainValid">Crear Cuenta</button>
-      
+
       <br>
       <br>
-      
+
       <div class="login-texto-container">
         <span>Ya tienes una cuenta?</span>
       </div>

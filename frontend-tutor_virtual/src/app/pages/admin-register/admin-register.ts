@@ -30,10 +30,16 @@ export class AdminRegister {
     usuario: ['', [Validators.required, Validators.minLength(4)]],
     correo: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required]]
+    confirmPassword: ['', [Validators.required]],
+    claveTutor: ['', [Validators.required, this.validarClaveTutor]]
   }, {
     validators: this.passwordsIguales
   });
+
+  validarClaveTutor(control: AbstractControl) {
+    const value = control.value;
+    return value === 'Tutorvirtual123@' ? null : { invalidTutorKey: true };
+  }
 
   passwordsIguales(form: AbstractControl) {
     const pass = form.get('password')?.value;
