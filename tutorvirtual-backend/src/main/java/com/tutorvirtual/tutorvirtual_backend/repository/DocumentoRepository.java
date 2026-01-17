@@ -20,6 +20,6 @@ public interface DocumentoRepository extends JpaRepository<Documento, Long> {
     long contarPorFecha(@Param("fecha") String fecha);
 
     // ✅ Listar documentos optimizado (sin bytes)
-    @Query("SELECT new com.tutorvirtual.tutorvirtual_backend.dto.DocumentoDTO(d.id, d.nombreArchivo, d.tamañoArchivo, d.categoria, d.fechaSubida) FROM Documento d")
+    @Query("SELECT new com.tutorvirtual.tutorvirtual_backend.dto.DocumentoDTO(d.id, d.nombreArchivo, d.tamanoArchivo, d.categoria, d.fechaSubida) FROM Documento d")
     List<DocumentoDTO> findAllOptimized();
 }

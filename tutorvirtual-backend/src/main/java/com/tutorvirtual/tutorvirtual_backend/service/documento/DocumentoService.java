@@ -54,4 +54,8 @@ public class DocumentoService {
     public List<DocumentoDTO> listarDocumentos() {
         return documentoRepository.findAllOptimized();
     }
+
+    public List<Documento> listarTodos() {
+        return documentoRepository.findAll();
+    }
 }

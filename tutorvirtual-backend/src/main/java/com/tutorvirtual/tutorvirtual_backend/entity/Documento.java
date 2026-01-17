@@ -22,8 +22,8 @@ public class Documento {
     @Column(name = "nombre_archivo", nullable = false)
     private String nombreArchivo;
 
-    @Column(name = "tamaño_archivo", nullable = false)
-    private float tamañoArchivo;
+    @Column(name = "tamano_archivo", nullable = false)
+    private float tamanoArchivo;
 
     @Column(nullable = false)
     private String categoria;
@@ -83,12 +83,12 @@ public class Documento {
         this.nombreArchivo = nombreArchivo;
     }
 
-    public float getTamañoArchivo() {
-        return tamañoArchivo;
+    public float getTamanoArchivo() {
+        return tamanoArchivo;
     }
 
-    public void setTamañoArchivo(float tamañoArchivo) {
-        this.tamañoArchivo = tamañoArchivo;
+    public void setTamanoArchivo(float tamanoArchivo) {
+        this.tamanoArchivo = tamanoArchivo;
     }
 
     public String getCategoria() {

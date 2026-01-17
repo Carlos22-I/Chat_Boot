@@ -31,7 +31,7 @@ public class GeminiService {
 
     public String generarRespuesta(String pregunta) {
 
-        List<Documento> documentos = documentoService.listarDocumentos();
+        List<Documento> documentos = documentoService.listarTodos();
 
         StringBuilder contexto = new StringBuilder();
         contexto.append("Base de conocimientos de trámites UNAMBA:\n\n");
@@ -44,7 +44,7 @@ public class GeminiService {
             contexto.append("📄 Fuente: ")
                     .append(doc.getNombreArchivo())
                     .append("\n");
-            
+
             String contenido = doc.getContenidoTexto();
             if (contenido != null && !contenido.isBlank()) {
                 if (contenido.length() > 3000) {
@@ -57,52 +57,48 @@ public class GeminiService {
         }
 
         String prompt = """
-        Eres un asistente virtual amigable de la UNAMBA llamado "Tutor Virtual". 
-        Tu objetivo es ayudar a estudiantes con sus trámites de forma cálida y profesional.
-        
-        INFORMACIÓN DISPONIBLE:
-        %s
-        
-        INSTRUCCIONES:
-        - Sé conversacional y amigable. Usa emojis ocasionalmente (😊, 📋, ✅, 💡)
-        - Si te saludan, saluda de vuelta cálidamente
-        - Si preguntan por un trámite, explica los pasos de forma clara:
-          
-          "¡Claro! 😊 Te ayudo con [trámite]. Estos son los pasos:
-          
-          📋 PASO 1: [Título]
-          [Descripción detallada]
-          
-          📋 PASO 2: [Título]
-          [Descripción detallada]
-          
-          📋 PASO 3: [Título]
-          [Descripción detallada]
-          
-          💡 Información adicional:
-          - Horarios: [...]
-          - Costo: [...]
-          - Ubicación: [...]
-          
-          ¿Hay algo más en lo que pueda ayudarte? 😊"
-        
-        - Si hacen preguntas de seguimiento, responde de forma natural y conversacional
-        - VARÍA tus respuestas. No repitas exactamente lo mismo si preguntan dos veces
-        - Si no tienes información, sé honesto y sugiere alternativas
-        
-        PREGUNTA DEL ESTUDIANTE:
-        %s
-        """.formatted(contexto.toString(), pregunta);
+                Eres un asistente virtual amigable de la UNAMBA llamado "Tutor Virtual".
+                Tu objetivo es ayudar a estudiantes con sus trámites de forma cálida y profesional.
+
+                INFORMACIÓN DISPONIBLE:
+                %s
+
+                INSTRUCCIONES:
+                - Sé conversacional y amigable. Usa emojis ocasionalmente (😊, 📋, ✅, 💡)
+                - Si te saludan, saluda de vuelta cálidamente
+                - Si preguntan por un trámite, explica los pasos de forma clara:
+
+                  "¡Claro! 😊 Te ayudo con [trámite]. Estos son los pasos:
+
+                  📋 PASO 1: [Título]
+                  [Descripción detallada]
+
+                  📋 PASO 2: [Título]
+                  [Descripción detallada]
+
+                  📋 PASO 3: [Título]
+                  [Descripción detallada]
+
+                  💡 Información adicional:
+                  - Horarios: [...]
+                  - Costo: [...]
+                  - Ubicación: [...]
+
+                  ¿Hay algo más en lo que pueda ayudarte? 😊"
+
+                - Si hacen preguntas de seguimiento, responde de forma natural y conversacional
+                - VARÍA tus respuestas. No repitas exactamente lo mismo si preguntan dos veces
+                - Si no tienes información, sé honesto y sugiere alternativas
+
+                PREGUNTA DEL ESTUDIANTE:
+                %s
+                """.formatted(contexto.toString(), pregunta);
 
         Map<String, Object> body = Map.of(
-            "contents", List.of(
-                Map.of(
-                    "parts", List.of(
-                        Map.of("text", prompt)
-                    )
-                )
-            )
-        );
+                "contents", List.of(
+                        Map.of(
+                                "parts", List.of(
+                                        Map.of("text", prompt)))));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -115,13 +111,23 @@ public class GeminiService {
             System.out.println("🚀 Enviando pregunta a Gemini...");
             System.out.println("📄 Documentos en contexto: " + documentos.size());
 
-            Map response = restTemplate.postForObject(url, request, Map.class);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> response = restTemplate.postForObject(url, request, Map.class);
 
-            List candidates = (List) response.get("candidates");
-            Map candidate = (Map) candidates.get(0);
-            Map content = (Map) candidate.get("content");
-            List parts = (List) content.get("parts");
-            Map part = (Map) parts.get(0);
+            if (response == null || !response.containsKey("candidates")) {
+                return "Error: No se recibió respuesta de Gemini.";
+            }
+
+            @SuppressWarnings("unchecked")
+            List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
+            Map<String, Object> candidate = candidates.get(0);
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> content = (Map<String, Object>) candidate.get("content");
+
+            @SuppressWarnings("unchecked")
+            List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
+            Map<String, Object> part = parts.get(0);
 
             String respuesta = part.get("text").toString();
             System.out.println("✅ Respuesta generada correctamente");

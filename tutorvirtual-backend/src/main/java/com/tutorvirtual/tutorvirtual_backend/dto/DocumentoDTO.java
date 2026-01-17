@@ -3,14 +3,14 @@ package com.tutorvirtual.tutorvirtual_backend.dto;
 public class DocumentoDTO {
     private Long id;
     private String nombreArchivo;
-    private float tamañoArchivo;
+    private float tamanoArchivo;
     private String categoria;
     private String fechaSubida;
 
-    public DocumentoDTO(Long id, String nombreArchivo, float tamañoArchivo, String categoria, String fechaSubida) {
+    public DocumentoDTO(Long id, String nombreArchivo, float tamanoArchivo, String categoria, String fechaSubida) {
         this.id = id;
         this.nombreArchivo = nombreArchivo;
-        this.tamañoArchivo = tamañoArchivo;
+        this.tamanoArchivo = tamanoArchivo;
         this.categoria = categoria;
         this.fechaSubida = fechaSubida;
     }
@@ -24,8 +24,8 @@ public class DocumentoDTO {
         return nombreArchivo;
     }
 
-    public float getTamañoArchivo() {
-        return tamañoArchivo;
+    public float getTamanoArchivo() {
+        return tamanoArchivo;
     }
 
     public String getCategoria() {

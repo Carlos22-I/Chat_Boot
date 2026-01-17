@@ -73,7 +73,7 @@ public class DocumentoController {
             documento.setRutaArchivo("DB_STORAGE"); // Valor placeholder
             documento.setDatos(file.getBytes());
             documento.setFechaSubida(LocalDate.now().toString());
-            documento.setTamañoArchivo(file.getSize() / (1024f * 1024f));
+            documento.setTamanoArchivo(file.getSize() / (1024f * 1024f));
             documento.setContenidoTexto(textoExtraido);
 
             documentoService.guardarDocumento(documento);
@@ -223,7 +223,7 @@ public class DocumentoController {
             doc.setContenidoTexto(textoExtraido);
 
             float tamañoMB = file.getSize() / (1024f * 1024f);
-            doc.setTamañoArchivo(tamañoMB);
+            doc.setTamanoArchivo(tamañoMB);
 
             documentoService.guardarDocumento(doc);
 
