@@ -35,12 +35,12 @@ public class RegistroUsuarioController {
         System.out.println("Nombres: " + dto.getApellidosNombres());
         System.out.println("Usuario: " + dto.getNombreUsuario());
         System.out.println("Email: " + dto.getCorreo());
-        System.out.println("Contraseña: [PROTECTED]");
+        System.out.println("Contrasena: [PROTECTED]");
 
         // 1️⃣ Validar contraseñas
         if (!dto.getContrasena().equals(dto.getConfirmarContrasena())) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Las contraseñas no coinciden"));
+                    .body(Map.of("error", "Las contrasenas no coinciden"));
         }
 
         // 2️⃣ Validar formato de email

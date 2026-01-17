@@ -51,19 +51,19 @@
       </div>
 
       <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" formControlName="password" placeholder="Mínimo 6 caracteres">
+        <label>Contrasena</label>
+        <input type="password" formControlName="password" placeholder="Minimo 6 caracteres">
         <span class="error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
           * Campo obligatorio (mínimo 6 caracteres)
         </span>
       </div>
 
       <div class="form-group">
-        <label>Confirmar Contraseña</label>
-        <input type="password" formControlName="confirmPassword" placeholder="Confirme su contraseña">
+        <label>Confirmar Contrasena</label>
+        <input type="password" formControlName="confirmPassword" placeholder="Confirme su contrasena">
         <span class="error"
           *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
-          * Las contraseñas no coinciden
+          * Las contrasenas no coinciden
         </span>
       </div>
 

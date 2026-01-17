@@ -105,7 +105,7 @@ public class DocumentoController {
 
             // if (Files.exists(rutaArchivo)) {
             // Files.delete(rutaArchivo);
-            // System.out.println("✅ Archivo físico eliminado: " + rutaArchivo);
+            System.out.println("✅ Tamano extraido: " + documento.getTamanoArchivo());
             // } else {
             // System.out.println("⚠️ El archivo físico no existe: " + rutaArchivo);
             // }
@@ -220,8 +220,8 @@ public class DocumentoController {
             doc.setFechaSubida(LocalDate.now().toString());
             doc.setContenidoTexto(textoExtraido);
 
-            float tamañoMB = file.getSize() / (1024f * 1024f);
-            doc.setTamanoArchivo(tamañoMB);
+            float tamanoMB = file.getSize() / (1024f * 1024f);
+            doc.setTamanoArchivo(tamanoMB);
 
             documentoService.guardarDocumento(doc);
 

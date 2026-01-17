@@ -32,7 +32,7 @@ public class UsuarioController {
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
 
         System.out.println("👉 Email recibido: " + request.getEmail());
-        System.out.println("👉 Contraseña recibida: [PROTECTED]");
+        System.out.println("👉 Contrasena recibida: [PROTECTED]");
 
         Usuario user = usuarioService.login(
                 request.getEmail(),

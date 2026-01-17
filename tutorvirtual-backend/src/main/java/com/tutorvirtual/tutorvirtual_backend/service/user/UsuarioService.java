@@ -56,7 +56,7 @@ public class UsuarioService {
             throw new RuntimeException("Email inválido");
         }
 
-        // Encriptar contraseña
+        // Encriptar contrasena
         usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
 
         return usuarioRepository.save(usuario);
