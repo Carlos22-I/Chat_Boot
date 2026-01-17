@@ -32,11 +32,11 @@ public class UsuarioController {
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
 
         System.out.println("👉 Email recibido: " + request.getEmail());
-        System.out.println("👉 Contraseña recibida: " + request.getContraseña());
+        System.out.println("👉 Contraseña recibida: [PROTECTED]");
 
         Usuario user = usuarioService.login(
-                request.getEmail(), // ✅ CAMBIO
-                request.getContraseña());
+                request.getEmail(),
+                request.getContrasena());
 
         if (user == null) {
             return ResponseEntity

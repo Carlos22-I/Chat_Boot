@@ -35,10 +35,10 @@ public class RegistroUsuarioController {
         System.out.println("Nombres: " + dto.getApellidosNombres());
         System.out.println("Usuario: " + dto.getNombreUsuario());
         System.out.println("Email: " + dto.getCorreo());
-        System.out.println("Contraseña: " + dto.getContraseña());
+        System.out.println("Contraseña: [PROTECTED]");
 
         // 1️⃣ Validar contraseñas
-        if (!dto.getContraseña().equals(dto.getConfirmarContraseña())) {
+        if (!dto.getContrasena().equals(dto.getConfirmarContrasena())) {
             return ResponseEntity.badRequest()
                     .body(Map.of("error", "Las contraseñas no coinciden"));
         }
@@ -55,7 +55,7 @@ public class RegistroUsuarioController {
             registro.setApellidosNombres(dto.getApellidosNombres());
             registro.setNombreUsuario(dto.getNombreUsuario());
             registro.setCorreo(dto.getCorreo());
-            registro.setContraseña(dto.getContraseña());
+            registro.setContrasena(dto.getContrasena());
 
             RegistroUsuario registroGuardado = registroService.registrar(registro);
             System.out.println("✅ Guardado en registro_usuarios: " + registroGuardado.getId());
@@ -64,7 +64,7 @@ public class RegistroUsuarioController {
             Usuario usuario = new Usuario();
             usuario.setEmail(dto.getCorreo()); // ✅ Email
             usuario.setNombreUsuario(dto.getNombreUsuario()); // Display name
-            usuario.setContraseña(dto.getContraseña());
+            usuario.setContrasena(dto.getContrasena());
 
             Usuario usuarioGuardado = usuarioService.registrar(usuario);
             System.out.println("✅ Guardado en usuarios: " + usuarioGuardado.getId());

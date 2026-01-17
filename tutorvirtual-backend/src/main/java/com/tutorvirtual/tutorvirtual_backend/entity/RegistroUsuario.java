@@ -24,26 +24,48 @@ public class RegistroUsuario {
     @Column(unique = true, nullable = false)
     private String correo;
 
-    @Column(nullable = false)
-    private String contraseña;
-
-    
+    @Column(name = "contrasena", nullable = false)
+    private String contrasena;
 
     // Getters y setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getApellidosNombres() { return apellidosNombres; }
-    public void setApellidosNombres(String apellidosNombres) { this.apellidosNombres = apellidosNombres; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getNombreUsuario() { return nombreUsuario; }
-    public void setNombreUsuario(String nombreUsuario) { this.nombreUsuario = nombreUsuario; }
+    public String getApellidosNombres() {
+        return apellidosNombres;
+    }
 
-    public String getCorreo() { return correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
+    public void setApellidosNombres(String apellidosNombres) {
+        this.apellidosNombres = apellidosNombres;
+    }
 
-    public String getContraseña() { return contraseña; }
-    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
 
-    
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
 }

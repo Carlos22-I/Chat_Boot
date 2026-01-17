@@ -5,31 +5,46 @@ public class RegistroRequestDTO {
     private String apellidosNombres;
     private String nombreUsuario;
     private String correo;
-    private String contraseña;
-    private String confirmarContraseña;
+    private String contrasena;
+    private String confirmarContrasena;
 
-    public String getApellidosNombres() { return apellidosNombres; }
+    public String getApellidosNombres() {
+        return apellidosNombres;
+    }
+
     public void setApellidosNombres(String apellidosNombres) {
         this.apellidosNombres = apellidosNombres;
     }
 
-    public String getNombreUsuario() { return nombreUsuario; }
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
 
-    public String getCorreo() { return correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
-
-    public String getContraseña() { return contraseña; }
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public String getCorreo() {
+        return correo;
     }
 
-    public String getConfirmarContraseña() {
-        return confirmarContraseña;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
-    public void setConfirmarContraseña(String confirmarContraseña) {
-        this.confirmarContraseña = confirmarContraseña;
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public String getConfirmarContrasena() {
+        return confirmarContrasena;
+    }
+
+    public void setConfirmarContrasena(String confirmarContrasena) {
+        this.confirmarContrasena = confirmarContrasena;
     }
 }

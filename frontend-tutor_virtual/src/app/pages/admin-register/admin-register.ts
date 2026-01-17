@@ -117,8 +117,8 @@ export class AdminRegister {
       apellidosNombres: this.registerForm.value.nombres,
       nombreUsuario: this.registerForm.value.usuario,
       correo: this.registerForm.value.correo,
-      contraseña: this.registerForm.value.password,
-      confirmarContraseña: this.registerForm.value.confirmPassword
+      contrasena: this.registerForm.value.password,
+      confirmarContrasena: this.registerForm.value.confirmPassword
     };
 
     this.authService.register(payload).subscribe({

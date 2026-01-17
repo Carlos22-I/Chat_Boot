@@ -19,7 +19,7 @@ public class UsuarioService {
     }
 
     // Login con EMAIL
-    public Usuario login(String email, String contraseña) {
+    public Usuario login(String email, String contrasena) {
 
         Optional<Usuario> userOptional = usuarioRepository.findByEmail(email);
 
@@ -29,7 +29,7 @@ public class UsuarioService {
 
         Usuario user = userOptional.get();
 
-        if (passwordEncoder.matches(contraseña, user.getContraseña())) {
+        if (passwordEncoder.matches(contrasena, user.getContrasena())) {
             return user;
         }
 
@@ -57,7 +57,7 @@ public class UsuarioService {
         }
 
         // Encriptar contraseña
-        usuario.setContraseña(passwordEncoder.encode(usuario.getContraseña()));
+        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
 
         return usuarioRepository.save(usuario);
     }
