@@ -120,14 +120,19 @@ public class GeminiService {
 
             @SuppressWarnings("unchecked")
             List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
-            Map<String, Object> candidate = candidates.get(0);
+            if (candidates.isEmpty())
+                return "Error: Sin candidatos en la respuesta.";
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> candidate = (Map<String, Object>) candidates.get(0);
 
             @SuppressWarnings("unchecked")
             Map<String, Object> content = (Map<String, Object>) candidate.get("content");
 
             @SuppressWarnings("unchecked")
             List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
-            Map<String, Object> part = parts.get(0);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> part = (Map<String, Object>) parts.get(0);
 
             String respuesta = part.get("text").toString();
             System.out.println("✅ Respuesta generada correctamente");
