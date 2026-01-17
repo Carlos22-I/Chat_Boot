@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tutorvirtual.tutorvirtual_backend.dto.DocumentoDTO;
 import com.tutorvirtual.tutorvirtual_backend.entity.Documento;
 import com.tutorvirtual.tutorvirtual_backend.service.documento.DocumentoService;
 import com.tutorvirtual.tutorvirtual_backend.service.pdf.PdfTextService;
@@ -39,7 +40,7 @@ public class DocumentoController {
     // 1️⃣ LISTAR DOCUMENTOS
     // =========================
     @GetMapping
-    public ResponseEntity<List<Documento>> listarDocumentos() {
+    public ResponseEntity<List<DocumentoDTO>> listarDocumentos() {
         return ResponseEntity.ok(documentoService.listarDocumentos());
     }
 

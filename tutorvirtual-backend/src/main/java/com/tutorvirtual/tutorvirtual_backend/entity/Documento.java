@@ -8,7 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "documentos")
+@Table(name = "documentos", indexes = {
+        @jakarta.persistence.Index(name = "idx_nombre_archivo", columnList = "nombre_archivo"),
+        @jakarta.persistence.Index(name = "idx_categoria", columnList = "categoria"),
+        @jakarta.persistence.Index(name = "idx_fecha_subida", columnList = "fecha_subida")
+})
 public class Documento {
 
     @Id

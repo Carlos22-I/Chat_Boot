@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.util.List;
+import com.tutorvirtual.tutorvirtual_backend.dto.DocumentoDTO;
 
 import com.tutorvirtual.tutorvirtual_backend.entity.Documento;
 
@@ -16,4 +18,8 @@ public interface DocumentoRepository extends JpaRepository<Documento, Long> {
     // ✅ Contar documentos por fecha exacta
     @Query("SELECT COUNT(d) FROM Documento d WHERE d.fechaSubida = :fecha")
     long contarPorFecha(@Param("fecha") String fecha);
+
+    // ✅ Listar documentos optimizado (sin bytes)
+    @Query("SELECT new com.tutorvirtual.tutorvirtual_backend.dto.DocumentoDTO(d.id, d.nombreArchivo, d.tamañoArchivo, d.categoria, d.fechaSubida) FROM Documento d")
+    List<DocumentoDTO> findAllOptimized();
 }

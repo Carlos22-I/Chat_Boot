@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tutorvirtual.tutorvirtual_backend.dto.DocumentoDTO;
 import com.tutorvirtual.tutorvirtual_backend.entity.Documento;
 import com.tutorvirtual.tutorvirtual_backend.repository.DocumentoRepository;
 
@@ -50,7 +51,7 @@ public class DocumentoService {
     }
 
     @Cacheable("documentos")
-    public List<Documento> listarDocumentos() {
-        return documentoRepository.findAll();
+    public List<DocumentoDTO> listarDocumentos() {
+        return documentoRepository.findAllOptimized();
     }
 }
