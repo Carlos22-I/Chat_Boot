@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DocumentoService } from '../../services/documento.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 interface DocumentFile {
   id: number;
@@ -227,12 +228,12 @@ export class AdminDashboard implements OnInit {
 
   verDocumento(id: number) {
     console.log('👁️ Viendo documento ID:', id);
-    window.open(`http://localhost:8080/api/documentos/ver/${id}`, '_blank');
+    window.open(`${environment.apiUrl}/documentos/ver/${id}`, '_blank');
   }
 
   descargarDocumento(id: number) {
     console.log('⬇️ Descargando documento ID:', id);
-    window.open(`http://localhost:8080/api/documentos/descargar/${id}`, '_blank');
+    window.open(`${environment.apiUrl}/documentos/descargar/${id}`, '_blank');
   }
 
   seleccionarArchivoActualizar(id: number) {

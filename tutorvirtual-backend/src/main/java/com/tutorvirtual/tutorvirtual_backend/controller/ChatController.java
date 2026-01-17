@@ -23,7 +23,7 @@ import com.tutorvirtual.tutorvirtual_backend.service.chat.ChatService;
 
 @RestController
 @RequestMapping("/api/chat")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = { "https://chat-boot-pi.vercel.app", "http://localhost:4200" })
 public class ChatController {
 
     private final ChatService chatService;

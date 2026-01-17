@@ -18,7 +18,7 @@ import com.tutorvirtual.tutorvirtual_backend.service.user.UsuarioService;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = { "https://chat-boot-pi.vercel.app", "http://localhost:4200" })
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -30,16 +30,15 @@ public class UsuarioController {
         this.jwtUtil = jwtUtil;
     }
 
-   @PostMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
 
         System.out.println("👉 Email recibido: " + request.getEmail());
         System.out.println("👉 Contraseña recibida: " + request.getContraseña());
 
         Usuario user = usuarioService.login(
-                request.getEmail(),  // ✅ CAMBIO
-                request.getContraseña()
-        );
+                request.getEmail(), // ✅ CAMBIO
+                request.getContraseña());
 
         if (user == null) {
             return ResponseEntity
@@ -52,6 +51,5 @@ public class UsuarioController {
 
         return ResponseEntity.ok(response);
     }
-
 
 }

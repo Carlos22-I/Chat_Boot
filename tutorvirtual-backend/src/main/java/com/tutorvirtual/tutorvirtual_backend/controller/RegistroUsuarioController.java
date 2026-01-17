@@ -17,7 +17,7 @@ import com.tutorvirtual.tutorvirtual_backend.service.user.UsuarioService;
 
 @RestController
 @RequestMapping("/api/usuarios/register")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = { "https://chat-boot-pi.vercel.app", "http://localhost:4200" })
 public class RegistroUsuarioController {
 
     private final RegistroUsuarioService registroService;
@@ -30,7 +30,7 @@ public class RegistroUsuarioController {
         this.usuarioService = usuarioService;
     }
 
-   @PostMapping
+    @PostMapping
     public ResponseEntity<?> registrar(@RequestBody RegistroRequestDTO dto) {
 
         System.out.println("📥 Datos recibidos:");
@@ -64,16 +64,15 @@ public class RegistroUsuarioController {
 
             // 4️⃣ Crear usuario para login
             Usuario usuario = new Usuario();
-            usuario.setEmail(dto.getCorreo());  // ✅ Email
-            usuario.setNombreUsuario(dto.getNombreUsuario());  // Display name
+            usuario.setEmail(dto.getCorreo()); // ✅ Email
+            usuario.setNombreUsuario(dto.getNombreUsuario()); // Display name
             usuario.setContraseña(dto.getContraseña());
 
             Usuario usuarioGuardado = usuarioService.registrar(usuario);
             System.out.println("✅ Guardado en usuarios: " + usuarioGuardado.getId());
 
             return ResponseEntity.ok(
-                Map.of("mensaje", "resgistro existoso")
-            );
+                    Map.of("mensaje", "resgistro existoso"));
 
         } catch (RuntimeException e) {
             System.err.println("❌ Error: " + e.getMessage());
@@ -88,4 +87,3 @@ public class RegistroUsuarioController {
         return email.matches(emailRegex);
     }
 }
-

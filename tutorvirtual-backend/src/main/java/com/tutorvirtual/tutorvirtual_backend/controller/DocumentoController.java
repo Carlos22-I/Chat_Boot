@@ -22,7 +22,7 @@ import com.tutorvirtual.tutorvirtual_backend.service.pdf.PdfTextService;
 
 @RestController
 @RequestMapping("/api/documentos")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = { "https://chat-boot-pi.vercel.app", "http://localhost:4200" })
 public class DocumentoController {
 
     private final DocumentoService documentoService;
