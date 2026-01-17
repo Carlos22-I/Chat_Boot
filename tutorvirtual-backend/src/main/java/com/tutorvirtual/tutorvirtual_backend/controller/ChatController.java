@@ -13,7 +13,6 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,6 @@ import com.tutorvirtual.tutorvirtual_backend.service.chat.ChatService;
 
 @RestController
 @RequestMapping("/api/chat")
-@CrossOrigin(origins = { "https://chat-boot-pi.vercel.app", "http://localhost:4200" })
 public class ChatController {
 
     private final ChatService chatService;
@@ -34,6 +32,7 @@ public class ChatController {
 
     @PostMapping("/preguntar")
     public ResponseEntity<?> preguntar(@RequestBody Map<String, String> body) {
+        System.out.println("📩 Nueva pregunta recibida en el ChatController: " + body.get("pregunta"));
         String pregunta = body.get("pregunta");
         String respuesta = chatService.responderPregunta(pregunta);
 

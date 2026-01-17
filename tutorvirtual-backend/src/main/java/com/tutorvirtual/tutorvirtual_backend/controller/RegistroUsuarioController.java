@@ -3,7 +3,6 @@ package com.tutorvirtual.tutorvirtual_backend.controller;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import com.tutorvirtual.tutorvirtual_backend.service.user.UsuarioService;
 
 @RestController
 @RequestMapping("/api/usuarios/register")
-@CrossOrigin(origins = { "https://chat-boot-pi.vercel.app", "http://localhost:4200" })
 public class RegistroUsuarioController {
 
     private final RegistroUsuarioService registroService;
