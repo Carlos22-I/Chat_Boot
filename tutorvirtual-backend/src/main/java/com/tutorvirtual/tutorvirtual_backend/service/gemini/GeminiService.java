@@ -78,20 +78,22 @@ public class GeminiService {
 
             System.out.println("🚀 Consultando Gemini API...");
 
-            @SuppressWarnings("unchecked")
-            Map<String, Object> response = restTemplate.postForObject(url, request, Map.class);
+            Map<?, ?> response = restTemplate.postForObject(url, request, Map.class);
 
             if (response == null || !response.containsKey("candidates")) {
                 return "Lo siento, la IA no respondió. Por favor intenta de nuevo en un momento.";
             }
 
-            @SuppressWarnings("unchecked")
-            List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
-            Map<String, Object> candidate = (Map<String, Object>) candidates.get(0);
-            Map<String, Object> content = (Map<String, Object>) candidate.get("content");
-            List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
+            List<?> candidates = (List<?>) response.get("candidates");
+            if (candidates == null || candidates.isEmpty())
+                return "Error: Sin candidatos.";
 
-            return parts.get(0).get("text").toString();
+            Map<?, ?> candidate = (Map<?, ?>) candidates.get(0);
+            Map<?, ?> content = (Map<?, ?>) candidate.get("content");
+            List<?> parts = (List<?>) content.get("parts");
+            Map<?, ?> part = (Map<?, ?>) parts.get(0);
+
+            return part.get("text").toString();
 
         } catch (Exception e) {
             System.err.println("❌ Error crítico en GeminiService: " + e.getMessage());
