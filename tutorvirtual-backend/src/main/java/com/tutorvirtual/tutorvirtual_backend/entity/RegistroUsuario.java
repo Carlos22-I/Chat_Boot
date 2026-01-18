@@ -24,7 +24,7 @@ public class RegistroUsuario {
     @Column(unique = true, nullable = false)
     private String correo;
 
-    @Column(name = "contrasena", nullable = false)
+    @Column(name = "Contraseña", nullable = false)
     private String contrasena;
 
     // Getters y setters

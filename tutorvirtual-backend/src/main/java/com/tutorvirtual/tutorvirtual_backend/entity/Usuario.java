@@ -25,7 +25,7 @@ public class Usuario {
     private String nombreUsuario;
 
     @JsonProperty("contrasena")
-    @Column(name = "contrasena")
+    @Column(name = "Contraseña")
     private String contrasena;
 
     // Getters y setters
