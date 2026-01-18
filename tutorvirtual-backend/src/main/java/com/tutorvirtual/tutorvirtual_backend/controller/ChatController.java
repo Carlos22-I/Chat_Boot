@@ -304,7 +304,7 @@ public class ChatController {
         contenido.setFont(PDType1Font.HELVETICA, 12);
         contenido.beginText();
         contenido.newLineAtOffset(margen, y);
-        contenido.showText("Asistente Virtual de Trámites Documentarios");
+        contenido.showText("Asistente Virtual de Tramites Documentarios");
         contenido.endText();
 
         return y - 60;
@@ -334,7 +334,7 @@ public class ChatController {
             footer.setNonStrokingColor(new Color(150, 150, 150));
             footer.setFont(PDType1Font.HELVETICA, 8);
             footer.beginText();
-            String info = "UNAMBA - " + java.time.LocalDate.now() + "  |  Página " + (i + 1) + " de " + total;
+            String info = "UNAMBA - " + java.time.LocalDate.now() + "  |  Pagina " + (i + 1) + " de " + total;
             footer.newLineAtOffset(ancho / 2 - 80, 30);
             footer.showText(info);
             footer.endText();
@@ -356,6 +356,9 @@ public class ChatController {
                 .replaceAll("[\\x{1F600}-\\x{1F64F}]", "")
                 .replaceAll("[\\x{1F680}-\\x{1F6FF}]", "")
                 .replaceAll("[\\x{1F900}-\\x{1F9FF}]", "")
+                .replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u")
+                .replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U")
+                .replace("ñ", "n").replace("Ñ", "N")
                 .trim();
     }
 

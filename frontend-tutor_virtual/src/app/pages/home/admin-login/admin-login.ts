@@ -55,7 +55,7 @@ export class AdminLogin implements OnInit {
         this.router.navigate(['/admin-dashboard']);
       },
       error: (err) => {
-        this.errorMessage = err.error?.error || 'Usuario o contraseña incorrectos';
+        this.errorMessage = err.error?.error || 'Usuario o contrasena incorrectos';
         this.isLoading = false;
       }
     });
