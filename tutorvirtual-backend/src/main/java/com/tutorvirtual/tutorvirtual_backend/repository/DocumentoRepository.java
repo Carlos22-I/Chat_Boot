@@ -22,4 +22,8 @@ public interface DocumentoRepository extends JpaRepository<Documento, Long> {
     // ✅ Listar documentos optimizado (sin bytes)
     @Query("SELECT new com.tutorvirtual.tutorvirtual_backend.dto.DocumentoDTO(d.id, d.nombreArchivo, d.tamanoArchivo, d.categoria, d.fechaSubida) FROM Documento d")
     List<DocumentoDTO> findAllOptimized();
+
+    // ✅ Obtener solo texto para Gemini (evitar cargar bytes)
+    @Query("SELECT d.nombreArchivo, d.contenidoTexto FROM Documento d")
+    List<Object[]> findForGeminiContext();
 }

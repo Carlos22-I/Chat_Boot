@@ -41,7 +41,7 @@ public class UsuarioController {
         if (user == null) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Email o contraseña incorrectos"));
+                    .body(Map.of("error", "Email o contrasena incorrectos"));
         }
 
         String token = jwtUtil.generateToken(user.getEmail());

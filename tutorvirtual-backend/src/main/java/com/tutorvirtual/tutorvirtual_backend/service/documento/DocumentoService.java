@@ -58,4 +58,8 @@ public class DocumentoService {
     public List<Documento> listarTodos() {
         return documentoRepository.findAll();
     }
+
+    public List<Object[]> listarParaGemini() {
+        return documentoRepository.findForGeminiContext();
+    }
 }

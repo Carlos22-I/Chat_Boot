@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.tutorvirtual.tutorvirtual_backend.entity.Documento;
 import com.tutorvirtual.tutorvirtual_backend.service.documento.DocumentoService;
 
 @Service
@@ -30,119 +29,74 @@ public class GeminiService {
     }
 
     public String generarRespuesta(String pregunta) {
+        try {
+            // ✅ OPTIMIZADO: Solo traemos Nombre y Texto (evita cargar bytes)
+            List<Object[]> documentos = documentoService.listarParaGemini();
 
-        List<Documento> documentos = documentoService.listarTodos();
+            StringBuilder contexto = new StringBuilder();
+            contexto.append("Base de conocimientos de trámites UNAMBA:\n\n");
 
-        StringBuilder contexto = new StringBuilder();
-        contexto.append("Base de conocimientos de trámites UNAMBA:\n\n");
+            if (documentos == null || documentos.isEmpty()) {
+                System.out.println("⚠️ No hay documentos cargados en la base de datos.");
+            } else {
+                for (Object[] row : documentos) {
+                    String nombre = (String) row[0];
+                    String texto = (String) row[1];
 
-        if (documentos.isEmpty()) {
-            return "Lo siento, aún no tengo información cargada sobre trámites.";
-        }
-
-        for (Documento doc : documentos) {
-            contexto.append("📄 Fuente: ")
-                    .append(doc.getNombreArchivo())
-                    .append("\n");
-
-            String contenido = doc.getContenidoTexto();
-            if (contenido != null && !contenido.isBlank()) {
-                if (contenido.length() > 3000) {
-                    contexto.append(contenido.substring(0, 3000))
-                            .append("...\n\n");
-                } else {
-                    contexto.append(contenido).append("\n\n");
+                    if (texto != null && !texto.isBlank()) {
+                        contexto.append("📄 Fuente: ").append(nombre).append("\n");
+                        // Limitar texto por documento para no exceder tokens básicos
+                        if (texto.length() > 2000) {
+                            contexto.append(texto.substring(0, 2000)).append("...\n\n");
+                        } else {
+                            contexto.append(texto).append("\n\n");
+                        }
+                    }
                 }
             }
-        }
 
-        String prompt = """
-                Eres un asistente virtual amigable de la UNAMBA llamado "Tutor Virtual".
-                Tu objetivo es ayudar a estudiantes con sus trámites de forma cálida y profesional.
+            String prompt = """
+                    Eres un asistente virtual de la UNAMBA llamado "Tutor Virtual".
+                    Ayuda a los estudiantes con sus trámites usando emojis (😊, 📋, ✅).
 
-                INFORMACIÓN DISPONIBLE:
-                %s
+                    INFORMACIÓN DISPONIBLE:
+                    %s
 
-                INSTRUCCIONES:
-                - Sé conversacional y amigable. Usa emojis ocasionalmente (😊, 📋, ✅, 💡)
-                - Si te saludan, saluda de vuelta cálidamente
-                - Si preguntan por un trámite, explica los pasos de forma clara:
+                    PREGUNTA DEL ESTUDIANTE:
+                    %s
+                    """.formatted(contexto.toString(), pregunta);
 
-                  "¡Claro! 😊 Te ayudo con [trámite]. Estos son los pasos:
+            Map<String, Object> body = Map.of(
+                    "contents", List.of(
+                            Map.of("parts", List.of(Map.of("text", prompt)))));
 
-                  📋 PASO 1: [Título]
-                  [Descripción detallada]
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-                  📋 PASO 2: [Título]
-                  [Descripción detallada]
+            HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+            String url = apiUrl + "key=" + apiKey;
 
-                  📋 PASO 3: [Título]
-                  [Descripción detallada]
-
-                  💡 Información adicional:
-                  - Horarios: [...]
-                  - Costo: [...]
-                  - Ubicación: [...]
-
-                  ¿Hay algo más en lo que pueda ayudarte? 😊"
-
-                - Si hacen preguntas de seguimiento, responde de forma natural y conversacional
-                - VARÍA tus respuestas. No repitas exactamente lo mismo si preguntan dos veces
-                - Si no tienes información, sé honesto y sugiere alternativas
-
-                PREGUNTA DEL ESTUDIANTE:
-                %s
-                """.formatted(contexto.toString(), pregunta);
-
-        Map<String, Object> body = Map.of(
-                "contents", List.of(
-                        Map.of(
-                                "parts", List.of(
-                                        Map.of("text", prompt)))));
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
-
-        String url = apiUrl + "key=" + apiKey;
-
-        try {
-            System.out.println("🚀 Enviando pregunta a Gemini...");
-            System.out.println("📄 Documentos en contexto: " + documentos.size());
+            System.out.println("🚀 Consultando Gemini API...");
 
             @SuppressWarnings("unchecked")
             Map<String, Object> response = restTemplate.postForObject(url, request, Map.class);
 
             if (response == null || !response.containsKey("candidates")) {
-                return "Error: No se recibió respuesta de Gemini.";
+                return "Lo siento, la IA no respondió. Por favor intenta de nuevo en un momento.";
             }
 
             @SuppressWarnings("unchecked")
             List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
-            if (candidates.isEmpty())
-                return "Error: Sin candidatos en la respuesta.";
-
-            @SuppressWarnings("unchecked")
             Map<String, Object> candidate = (Map<String, Object>) candidates.get(0);
-
-            @SuppressWarnings("unchecked")
             Map<String, Object> content = (Map<String, Object>) candidate.get("content");
-
-            @SuppressWarnings("unchecked")
             List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
-            @SuppressWarnings("unchecked")
-            Map<String, Object> part = (Map<String, Object>) parts.get(0);
 
-            String respuesta = part.get("text").toString();
-            System.out.println("✅ Respuesta generada correctamente");
-
-            return respuesta;
+            return parts.get(0).get("text").toString();
 
         } catch (Exception e) {
-            System.err.println("❌ Error al procesar con Gemini: " + e.getMessage());
+            System.err.println("❌ Error crítico en GeminiService: " + e.getMessage());
             e.printStackTrace();
-            return "Error al procesar la respuesta con IA.";
+            return "Error al conectar con el servidor de inteligencia artificial. Inténtalo más tarde.";
         }
     }
 }

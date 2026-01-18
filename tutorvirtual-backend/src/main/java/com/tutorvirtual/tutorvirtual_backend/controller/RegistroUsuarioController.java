@@ -37,7 +37,7 @@ public class RegistroUsuarioController {
         System.out.println("Email: " + dto.getCorreo());
         System.out.println("Contrasena: [PROTECTED]");
 
-        // 1️⃣ Validar contraseñas
+        // 1️⃣ Validar contrasenas
         if (!dto.getContrasena().equals(dto.getConfirmarContrasena())) {
             return ResponseEntity.badRequest()
                     .body(Map.of("error", "Las contrasenas no coinciden"));
@@ -46,7 +46,7 @@ public class RegistroUsuarioController {
         // 2️⃣ Validar formato de email
         if (!isValidEmail(dto.getCorreo())) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Email inválido"));
+                    .body(Map.of("error", "Email invalido"));
         }
 
         try {
@@ -70,7 +70,7 @@ public class RegistroUsuarioController {
             System.out.println("✅ Guardado en usuarios: " + usuarioGuardado.getId());
 
             return ResponseEntity.ok(
-                    Map.of("mensaje", "resgistro existoso"));
+                    Map.of("mensaje", "registro existoso"));
 
         } catch (RuntimeException e) {
             System.err.println("❌ Error: " + e.getMessage());
